@@ -1,0 +1,60 @@
+[project]
+name = "tsfm-bench"
+version = "0.1.0"
+description = "Point and distributional coherence of time-series foundation models: a multi-model evaluation"
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "torch==2.11.0",
+    "torchmetrics==1.9.0",
+    "chronos-forecasting==2.2.2",
+    "timesfm==2.0.1",
+    "uni2ts==2.0.0",
+    "gluonts==0.14.4",
+    "statsforecast==2.0.3",
+    "hierarchicalforecast==1.5.1",
+    "datasetsforecast==1.0.1",
+    "pandas==2.2.3",
+    "numpy==1.26.4",
+    "scipy==1.11.4",
+    "matplotlib==3.10.9",
+    "pyarrow==24.0.0",
+    "granite-tsfm==0.3.6",
+    "lightgbm>=4.7.0",
+    "mlforecast>=1.1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tsfm_bench"]
+
+# ---------------------------------------------------------------------------
+# torch is built against CUDA 13.0 (not the PyPI CPU/agnostic wheel): the
+# GB10 (sm_121) needs nvrtc >= 13 to JIT-compile Moirai's kernels; the cu128
+# build ships nvrtc 12.8 and fails. This single cu130 env runs every model in the study.
+# ---------------------------------------------------------------------------
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+
+[tool.uv]
+# These overrides are deliberate and must not be "fixed": uni2ts declares
+# torch<2.5 and gluonts declares pandas<2.2, but the project requires torch
+# 2.11+cu130 (for sm_121) and pandas>=2.2 (datasetsforecast M3 uses the 'ME'
+# offset alias). The overrides force the intended versions across the graph,
+# replacing the fragile `pip install --no-deps` workaround.
+override-dependencies = [
+    "torch==2.11.0",
+    "pandas==2.2.3",
+    "numpy==1.26.4",
+]

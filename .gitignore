@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# This repository is published as an ANONYMOUS review mirror (ESWA is double-
+# anonymized). Anything that names an author, or that we do not have the right
+# to redistribute, must stay out. Check `git status` before the first push.
+# ---------------------------------------------------------------------------
+
+# --- environment / build ---------------------------------------------------
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+tectonic                      # 25 MB vendored binary; reviewers can install their own
+
+# --- raw data (2.5 GB, all re-downloadable by the code) --------------------
+data/
+.backup/
+
+# --- DE-ANONYMIZING: never publish -----------------------------------------
+paper/title_page.tex          # author names, affiliations, e-mail
+paper/title_page.pdf
+paper/*_with_comments.docx    # reviewer comments carry their author metadata
+
+# --- third-party copyrighted PDFs: not ours to redistribute ----------------
+refrences/
+results/*.pdf
+Guide for authors*.pdf
+
+# --- experiment outputs -----------------------------------------------------
+# Results are NOT published. The repository ships the code and the instructions to
+# regenerate everything; reviewers who want the numbers run the campaign themselves.
+# See "Reproducing the paper" in README.md.
+results/
+results_backup_prerun_*/
+
+# --- LaTeX build artefacts (anywhere, not just paper/) ----------------------
+*.aux
+*.log
+*.bbl
+*.blg
+*.out
+*.fls
+*.fdb_latexmk
+*.spl
+*.synctex.gz
+*.toc
