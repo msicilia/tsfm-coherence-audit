@@ -58,26 +58,26 @@ A Multi-Model Audit of Coherence Failures}
 %% Authors intentionally omitted for double-anonymized review (see title_page.tex).
 
 \begin{abstract}
-Time-series foundation models are offered as drop-in forecasters, but they leave the
-relations among their outputs unconstrained, and so cannot be relied on to satisfy linear
-coupling constraints. Across eight hierarchies and six models applied zero-shot, most
-aggregate nodes are incoherent on six, at rates tracking neither accuracy nor model size.
-Two checks narrow the cause. A classical model and two models fit jointly across the
-hierarchy fail at comparable rates, so pretraining is not responsible, and a single
-series queried at monthly and annual scales contradicts itself, so no second series is
-needed. What follows is an asymmetry. For point forecasts the failure is
-removable, by overwriting each aggregate with the sum of its parts, at little cost in
-accuracy, yet the benchmarks and agentic systems we surveyed do not enforce it. For the
-predictive distributions these models emit, it is not removable. Summing marginals
-independently is inexpensive and does not track cross-series dependence, and a copula
-lowers the cost further, most where dependence is strongest, but only by estimating from
-history a joint distribution the model never produced. Probabilistic coherence therefore
-remains open. Accuracy is no substitute, varying more among the foundation
-models than between them and a ten-parameter classical baseline, whereas the coherence
-verdict is identical across models. The failure is nonetheless specific rather than
-indiscriminate, non-negativity being satisfied by one model. We argue for
-constraint-aware assembly, which enforces declared constraints by explicit projection,
-locate the guarantee there by ablation, and release a reproducible harness.
+Time-series foundation models are proposed as general-purpose forecasters, but they leave
+the relations among their outputs unconstrained, and so give no guarantee of satisfying
+linear coupling constraints. Across eight hierarchies and six models applied zero-shot,
+most aggregate nodes are incoherent on six, at rates independent of accuracy and size.
+Two comparisons delimit the finding. A classical model and two models fit jointly
+across the hierarchy are incoherent at comparable rates, so the failure is not due to
+pretraining, and a single series queried at monthly and annual scales contradicts itself,
+so no second series is involved. For point forecasts the failure can be removed by
+overwriting each aggregate with the sum of its parts, at little cost in accuracy,
+although the benchmarks and systems we surveyed do not enforce it. For the predictive
+distributions these models emit, it cannot be removed. Summing marginals
+independently is inexpensive and does not increase with cross-series dependence, and a
+copula lowers it further, most where dependence is strongest, though only by estimating
+from history a joint distribution the model never produced. Probabilistic
+coherence therefore remains open. Accuracy provides no comparable criterion, varying more
+among the foundation models than between them and a ten-parameter classical baseline,
+whereas the coherence result holds for every model tested. Non-negativity is satisfied by
+one model, so the failure is specific rather than general. We argue for constraint-aware
+assembly, which enforces declared constraints by explicit projection, show by ablation
+that the guarantee derives from it, and release a reproducible harness.
 \end{abstract}
 
 \begin{keyword}
