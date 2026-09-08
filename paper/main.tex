@@ -64,17 +64,16 @@ linear coupling constraints. Across eight hierarchies and six models applied zer
 most aggregate nodes are incoherent on six, independent of accuracy and size.
 Two comparisons delimit the finding. A classical model and two trained global models are
 incoherent at comparable rates, so the failure is not due to pretraining, and a single
-series queried at monthly and annual scales contradicts itself, so no second series is
+series queried at monthly and annual scales contradicts itself, with no second series
 involved. For point forecasts coherence can be imposed on the output exactly, by
 overwriting each aggregate with the sum of its parts, at little cost in accuracy,
 although no benchmark or agentic system we surveyed measures or enforces it. For the
-predictive distributions, imposing coherence requires dependence information the model
-never produced. Summing marginals independently is inexpensive and does not increase with
+predictive distributions, imposing coherence requires the dependence between series,
+which these models do not report. Summing marginals independently is inexpensive and does not increase with
 dependence, while a copula lowers the cost further where dependence is strongest, by
-estimating from history what the model omits. Probabilistic coherence therefore remains
+estimating it from past data. Probabilistic coherence therefore remains
 open. Coherence is also the more stable criterion for ranking models, since accuracy varies
-more among the foundation models than between them and a ten-parameter classical
-baseline.
+more among the foundation models than between them and a ten-parameter baseline.
 Non-negativity, which binds each series alone, is satisfied by one model, so the failure is
 confined to constraints that couple outputs. We argue for constraint-aware assembly, which enforces
 declared constraints by explicit projection, show by ablation that the guarantee derives
