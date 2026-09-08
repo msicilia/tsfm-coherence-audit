@@ -41,6 +41,13 @@
 
 \journal{Expert Systems with Applications}
 
+%% Suppress the class's "Preprint submitted to ... <date>" footer on page one.
+\makeatletter
+\def\ps@pprintTitle{%
+  \let\@oddhead\@empty \let\@evenhead\@empty
+  \let\@oddfoot\@empty \let\@evenfoot\@oddfoot}
+\makeatother
+
 \begin{document}
 
 \begin{frontmatter}
