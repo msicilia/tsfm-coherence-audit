@@ -47,8 +47,14 @@ def _fmt(x, nd=1):
 ABBREV = {"TinyTimeMixer": "TTM", "Chronos-Bolt": "C-Bolt",
           "Chronos-Bolt-Base": "C-Bolt-B", "Chronos-2": "C-2",
           "LightGBM": "LGBM"}
-ABBREV_NOTE = ("TTM = TinyTimeMixer; C-Bolt = Chronos-Bolt; "
-               "C-Bolt-B = Chronos-Bolt-Base; C-2 = Chronos-2; LGBM = LightGBM.")
+
+
+def _abbrev_note(models) -> str:
+    """Expand only the abbreviations a given table actually uses."""
+    used = [m for m in ABBREV if m in set(models)]
+    if not used:
+        return ""
+    return " " + "; ".join(f"{ABBREV[m]} = {m}" for m in used) + "."
 
 
 def _short(m: str) -> str:
@@ -124,13 +130,13 @@ def coherence_table() -> str:
            "reproduce almost exactly. Incoherence does not track model capacity "
            "($0.8$M--$200$M parameters, a factor of $250$): the low values belong to "
            "TinyTimeMixer, the smallest and least accurate model, where a flat forecast "
-           "is trivially closer to coherent. The classical AutoETS is incoherent at the "
-           "same rates, and the two trained global models, which forecast every "
+           "is trivially closer to coherent. The classical AutoETS is incoherent at "
+           "comparable rates, and the two trained global models, which forecast every "
            f"node jointly rather than per series, are incoherent on ${glob_lo:.0f}$--"
            f"${glob_hi:.0f}\\%$ of nodes, so the failure is not specific to per-series "
            "forecasting but general to any model whose outputs are not projected onto the "
            "coupling set. Bottom-up reconciliation drives all of these to exactly zero.")
-    cap += " " + ABBREV_NOTE
+    cap += _abbrev_note(models)
     # Nine model columns do not fit elsarticle's default review text block at
     # \small; footnotesize, a tight column gap and a final scale-to-width keep
     # it inside the margins.
@@ -160,7 +166,7 @@ def temporal_table() -> str:
            "so the failure cannot be attributed to modelling the hierarchy separately; "
            "bottom-up aggregation is also more accurate than the direct forecast in "
            f"{better} of {len(df)} model$\\times$level combinations.")
-    cap += " " + ABBREV_NOTE
+    cap += _abbrev_note(models)
     return _wrap(hdr + rows, cap, "tab:temporal", "l" + "r" * len(ks))
 
 
@@ -188,7 +194,7 @@ def nonneg_table() -> str:
            "lower ($10\\%$) predictive band. Violations appear only where the data sits "
            "against the boundary (M5 retail counts), and are essentially absent far from "
            "it (M3).")
-    cap += " " + ABBREV_NOTE
+    cap += _abbrev_note(piv.index)
     return _wrap(hdr + rows, cap, "tab:nonneg", "lrrrr")
 
 
@@ -328,10 +334,10 @@ def frontier_table() -> str:
            "foundation models and a ten-parameter AutoETS, over eight rolling origins. "
            "On the smooth M4 data the winner permutes with both $T$ and model choice and "
            "AutoETS lies inside the spread of the foundation models; on "
-           "intermittent M5 every foundation model beats AutoETS decisively. Requiring "
+           "intermittent M5 every foundation model outperforms AutoETS decisively. Requiring "
            "eight origins restricts the sample to longer series, so these figures are not "
            "directly comparable with three-origin studies.")
-    cap += " " + ABBREV_NOTE
+    cap += _abbrev_note(models)
     return _wrap(hdr + rows, cap, "tab:frontier", "l" + "r" * len(models), "4.5pt")
 
 
