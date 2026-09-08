@@ -51,27 +51,26 @@ A Multi-Model Audit of Coherence Failures}
 %% Authors intentionally omitted for double-anonymized review (see title_page.tex).
 
 \begin{abstract}
-Time-series foundation models are proposed as general-purpose forecasters, but they do
-not constrain relations among their outputs, and so give no guarantee of satisfying
-linear coupling constraints, whether across series or across time aggregations of one
-series. We evaluate eight hierarchies and six foundation models, applied zero-shot, and
-find most aggregate nodes incoherent on six of them, at rates independent of both
-accuracy and model size. However, bottom-up reconciliation removes the error exactly, at
-little cost. We find comparable rates in a classical model, and in a
-gradient-boosted tree and a neural network fit jointly to the hierarchy. The failure also occurs without a second series. Asked for monthly
-and annual forecasts of one series, every model contradicts itself on many aggregates,
-and its aggregated monthly forecasts outperform its direct annual one. These models also report predictive
-distributions, and making those coherent is harder and remains open. Summing marginals
-independently is inexpensive on most
-hierarchies and does not track cross-series dependence, but copula coupling lowers the
-cost further, most where dependence is strongest, by supplying the joint distribution
-per-series models lack. Two contrasts delimit this. Non-negativity is satisfied
-by one model and violated by the rest, so the failure is specific rather than
-indiscriminate. Accuracy also disperses widely enough to contain a ten-parameter
-classical baseline, indistinguishable from the foundation models on most smooth series by
-per-series Diebold--Mariano tests. We argue for constraint-aware assembly, whose
-guarantee an ablation locates in explicit projection rather than constraint-conditioned
-selection, and release a reproducible harness.
+Time-series foundation models are proposed as general-purpose forecasters, but nothing
+constrains the relations among their outputs, so they cannot be guaranteed to satisfy
+linear coupling constraints across series or across time. We evaluate eight hierarchies
+and six foundation models zero-shot, finding most aggregate nodes incoherent on six of
+them, at rates independent of accuracy and size. Coherence is recoverable only by
+overwriting each aggregate forecast with the sum of its parts, which costs little
+accuracy but leaves the model unchanged. Comparable rates appear in a classical model, a
+gradient-boosted tree, and a neural network fit jointly to the hierarchy. Asked for
+monthly and annual forecasts of one series, every model contradicts itself, and its
+aggregated monthly forecasts outperform the direct annual one. For the predictive
+distributions these models also emit, no such overwrite exists. Summing marginals
+independently is inexpensive and does not track cross-series dependence, while a copula
+lowers the cost further, most where dependence is strongest, by supplying the missing
+joint. It can be estimated from history but never recovered, so probabilistic coherence
+stays open. Non-negativity is satisfied by one model and violated by the rest, so the
+failure is specific rather than indiscriminate. Accuracy varies more among the foundation
+models than between them and a ten-parameter classical baseline, which per-series tests
+cannot separate from them on most smooth series. We argue for constraint-aware assembly,
+show by ablation that its guarantee comes from projecting forecasts onto the declared
+constraints rather than from model selection, and release a reproducible harness.
 \end{abstract}
 
 \begin{keyword}
@@ -129,8 +128,8 @@ concurrent work that does vary it~\citep{breakeven2026,quitobench2026,foundation
 corroborates that the small-versus-foundation verdict is not fixed along it, but none
 draws out the coherence consequence that is our subject. The second result bounds the
 coherence claim. Per-series constraints such as non-negativity are satisfied by
-some foundation models (through a built-in positivity heuristic) and violated without
-warning by others. Constraint satisfaction is thus not uniformly absent, and it is that
+one foundation model (through a built-in positivity heuristic) and violated without
+warning by the rest. Constraint satisfaction is thus not uniformly absent, and it is that
 contrast which licenses reading the coupling failure as structural rather than as
 general inattention to constraints.
 
