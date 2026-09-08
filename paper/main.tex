@@ -62,7 +62,7 @@ gradient-boosted tree and a neural network fit jointly to the hierarchy. The fai
 and annual forecasts of one series, every model contradicts itself on many aggregates,
 and its aggregated monthly forecasts outperform its direct annual one. These models also report predictive
 distributions, and making those coherent is harder and remains open. Summing marginals
-independently is near-free on most
+independently is inexpensive on most
 hierarchies and does not track cross-series dependence, but copula coupling lowers the
 cost further, most where dependence is strongest, by supplying the joint distribution
 per-series models lack. Two contrasts delimit this. Non-negativity is satisfied
@@ -124,7 +124,7 @@ them, and per-series Diebold--Mariano tests cannot separate it
 from them on about $81\%$ of smooth series. The axis along which these models are
 ranked therefore discriminates weakly at the level where forecasts are used, and no
 conclusion drawn from a single foundation model transfers to the others. The per-series
-history-length axis on which small models do best is varied by very few benchmarks;
+history-length axis on which small models do best is varied by few benchmarks;
 concurrent work that does vary it~\citep{breakeven2026,quitobench2026,foundational2025}
 corroborates that the small-versus-foundation verdict is not fixed along it, but none
 draws out the coherence consequence that is our subject. The second result bounds the
@@ -140,7 +140,7 @@ every per-series foundation model we test, at rates independent of both
 accuracy and model size, and that point reconciliation removes it exactly, while
 improving accuracy in the temporal case; (ii) we show that
 probabilistic coherence is harder: reconciling the predictive distributions by
-summing independent marginals is near-free on most hierarchies and does not scale with
+summing independent marginals is inexpensive on most hierarchies and does not scale with
 cross-series dependence as a simpler analysis suggested, but copula coupling still lowers
 the cost, most where dependence is strongest, because per-series models provide no
 joint distribution, leaving probabilistic coherence an open problem; (iii) we introduce
@@ -268,7 +268,7 @@ $S$~\citep{mint2019}. We evaluate forecasters on two axes: accuracy (mean absolu
 error, MASE) and constraint satisfaction
 (the fraction of forecast points or nodes that violate $\mathcal{C}$). The assembled
 forecaster is additionally
-interpretable by construction, having a handful of parameters, closed-form fitting and
+interpretable by construction, having few parameters, closed-form fitting and
 an emitted rationale, though we treat that as a design property rather than a
 benchmarked quantity.
 
@@ -436,7 +436,7 @@ coherent without being useful. Incoherence is therefore independent of capacity 
 as of accuracy. Crucially the small AutoETS model is incoherent at comparable rates
 to the foundation models, and so are the two trained global models: LightGBM is
 incoherent on $50$--$100\%$ of aggregate nodes and the TCN on $16$--$100\%$, despite
-being fit jointly across the whole hierarchy. Incoherence is thus not a quirk of
+being fit jointly across the whole hierarchy. Incoherence is thus not a peculiarity of
 per-series zero-shot models but a property of any forecaster that does not
 constrain its outputs to the coupling set; forecasting each series independently is only
 its cleanest instance. No amount of accuracy or joint training removes it, because
@@ -492,7 +492,7 @@ degrading to MASE above $2.5$ on Wiki2; its shrinkage variant restores stability
 does not improve on bottom-up. ERM is stable on only one of the eight hierarchies
 (Traffic, and even there it is far worse than bottom-up, $3.13$ versus $1.27$) and
 diverges on the rest (Table~\ref{tab:recon}, ``unst.''). A learned reconciler needs more
-signal than a small hierarchy read at a handful of origins provides; where MinTrace-OLS
+signal than a small hierarchy read at a few origins provides; where MinTrace-OLS
 is reported stable elsewhere, it is on larger in-sample panels than a frozen base
 affords. Bottom-up, which requires no estimation, remains the robust choice.
 
@@ -550,7 +550,7 @@ reconciled distributions with the (scaled) continuous ranked probability score, 
 (Table~\ref{tab:probcoh}).
 
 Unlike point reconciliation, restoring distributional coherence is not always
-free, but its cost is not the simple function of dependence one might expect. Summing
+costless, but its cost is not the simple function of dependence one might expect. Summing
 the bottom marginals independently assumes the bottom series are independent, so one
 would predict the CRPS inflation to grow with the hierarchy's actual cross-series
 dependence. It does not. We measure each hierarchy's dependence as the mean absolute
@@ -583,7 +583,7 @@ where the series are more dependent: the coupled cost decreases with dependence
 (Schaake slope $-0.18$, $R^2=0.75$, $p=0.005$; Gaussian $-0.17$, $R^2=0.81$, $p=0.002$;
 both at the hierarchy level, and robust to the sample: fitted on the original six
 hierarchies alone the Schaake slope is $-0.23$, $p=0.006$). On the strongly
-dependent Solar hierarchy both couplings improve on not just independent summation but
+dependent Solar hierarchy both couplings improve on not only independent summation but
 the raw, incoherent distribution (Chronos-2 $1.42 \to 1.17$ Schaake, against a raw
 $1.36$), and on Traffic the coupling recovers most of the independent-summation loss
 (TimesFM $1.56 \to 1.20$); the two couplings agree closely throughout. This is precisely
@@ -604,7 +604,7 @@ themselves and is therefore not an artefact of pooling.
 hierarchy cross-series dependence, one point per foundation model $\times$ hierarchy
 ($40$ points over eight hierarchies). Summing independent marginals (circles) does
 not cost more as dependence grows (slope $+0.11$, $R^2=0.05$, $p=0.58$); it is
-expensive only on Traffic and near-free elsewhere, including the two most dependent
+expensive only on Traffic and of little cost elsewhere, including the two most dependent
 hierarchies. Imposing the dependence with a Schaake shuffle (squares) or a Gaussian
 copula (triangles) lowers the cost, and increasingly so with dependence (Schaake slope
 $-0.18$, $R^2=0.75$, $p=0.005$), because the coupling supplies the joint the per-series
@@ -628,7 +628,7 @@ Two observations sharpen this. First, the violations appear exactly where the da
 approaches zero: on strictly positive M3 series, far from zero, every model is
 essentially clean ($\le 0.02\%$ of medians, under $1\%$ of bands). The failure is a
 property of the near-zero regime, not of the models in general. Second, model
-progress fixed only half of it: Chronos-2 reduces negative medians more than
+progress has addressed only half of it: Chronos-2 reduces negative medians more than
 tenfold relative to Chronos-Bolt ($13.0\%\to 0.9\%$) yet improves the
 negative lower band only marginally ($72.2\%\to 67.7\%$), so a newer model still
 cannot be
@@ -647,7 +647,7 @@ vary~\citep{breakeven2026,quitobench2026,foundational2025}, over three frequenci
 monthly
 and quarterly, M5 daily), with eight rolling origins and $95\%$ bootstrap confidence
 intervals (Table~\ref{tab:frontier}, Figure~\ref{fig:frontier}). With five foundation
-models the heterogeneity turns out to be larger than the effect it is meant to
+models the heterogeneity proves larger than the effect it is meant to
 adjudicate. On smooth M4 data the best model changes repeatedly with history length:
 a ten-parameter AutoETS is best at the shortest monthly history ($T=12$), Chronos-2 at
 $T=48$ and $96$, TimesFM at $T=384$; and Moirai is worse than AutoETS at every
@@ -677,12 +677,12 @@ rising above $90\%$ at some history lengths; on intermittent M5 the foundation m
 are significantly more accurate on $44$--$56\%$ of series and the indistinguishable share falls to
 $43$--$55\%$. The two
 tests are not in conflict: with thousands of paired series a small mean difference is
-easily detectable in aggregate, while on any given series the two forecasts
+readily detectable in aggregate, while on any given series the two forecasts
 usually cannot be told apart. The practical reading is that the choice between a
 foundation model and a ten-parameter alternative is, on smooth data, mostly
 undetectable at the level at which forecasts are actually deployed. A study
 evaluating one foundation model on one regime could therefore conclude either that
-small models remain competitive or that they are hopeless, and both conclusions would
+small models remain competitive or that they are obsolete, and both conclusions would
 be defensible on their own evidence. This is why the coherence results carry the
 paper: they hold for every model and every hierarchy, in both the cross-sectional and
 the temporal direction, whereas the accuracy comparison does not survive a change of
@@ -763,7 +763,7 @@ whether a reconciled foundation model or a small interpretable one. This is what
 supplies by construction. The probabilistic case sharpens the same point
 into an open problem: for point forecasts the reconciliation step is nearly costless, and
 even for the predictive distributions these models also emit, summing independent
-marginals is usually cheap. But it discards the cross-series dependence, the one
+marginals is usually inexpensive. But it discards the cross-series dependence, the one
 ingredient a per-series model never supplies. A copula must reconstruct that joint from
 history and can only approximate it, so exact probabilistic coherence, unlike point
 coherence, remains out of reach.
@@ -804,8 +804,8 @@ models fit jointly across every series. The failure is therefore not specific to
 per-series forecasting but general to any unconstrained forecaster. Asked for both monthly and
 annual forecasts of a single
 series, every model contradicts itself on $37$--$81\%$ of aggregates, where no second
-series exists to carry the blame. Restoring distributional coherence is harder still:
-summing independent marginals is usually cheap and does not scale with cross-series
+series exists to which the failure could be attributed. Restoring distributional coherence is harder still:
+summing independent marginals usually carries little cost and does not scale with cross-series
 dependence, but it omits the joint distribution a per-series model never supplies, which
 a copula can only approximate. Two supporting results underline that coherence is the
 robust, model-agnostic limitation: per-series accuracy is too heterogeneous across
