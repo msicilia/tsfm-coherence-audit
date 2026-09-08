@@ -58,17 +58,17 @@ A Multi-Model Audit of Coherence Failures}
 %% Authors intentionally omitted for double-anonymized review (see title_page.tex).
 
 \begin{abstract}
-Time-series foundation models are proposed as general-purpose forecasters, but nothing
-constrains the relations among their outputs, so they cannot be guaranteed to satisfy
-linear coupling constraints across series or across time. We evaluate eight hierarchies
-and six foundation models zero-shot, finding most aggregate nodes incoherent on six of
-them, at rates independent of accuracy and size. Coherence is recoverable only by
+Time-series foundation models are proposed as general-purpose forecasters, but they
+leave the relations among their outputs unconstrained, and so cannot be guaranteed to
+satisfy linear coupling constraints across series or across time. We evaluate eight
+hierarchies and six foundation models zero-shot, finding most aggregate nodes incoherent
+on six, at rates independent of accuracy and size. Coherence is recoverable only by
 overwriting each aggregate forecast with the sum of its parts, which costs little
-accuracy but leaves the model unchanged. Comparable rates appear in a classical model, a
-gradient-boosted tree, and a neural network fit jointly to the hierarchy. Asked for
-monthly and annual forecasts of one series, every model contradicts itself, and its
-aggregated monthly forecasts outperform the direct annual one. For the predictive
-distributions these models also emit, no such overwrite exists. Summing marginals
+accuracy but does not repair the model. Comparable rates appear in a classical model, a
+gradient-boosted tree, and a neural network fit jointly to the hierarchy. All models
+contradict themselves when asked for monthly and annual forecasts of one series, and
+their aggregated monthly forecasts outperform the direct annual one. For the predictive
+distributions these models emit, no such overwrite exists. Summing marginals
 independently is inexpensive and does not track cross-series dependence, while a copula
 lowers the cost further, most where dependence is strongest, by supplying the missing
 joint. It can be estimated from history but never recovered, so probabilistic coherence
