@@ -67,7 +67,8 @@ incoherent at comparable rates, so the failure is not due to pretraining, and a 
 series queried at monthly and annual scales contradicts itself, so no second series is
 involved. For point forecasts coherence can be imposed on the output exactly, by
 overwriting each aggregate with the sum of its parts, at little cost in accuracy,
-although the benchmarks and systems we surveyed do not apply it. For the predictive
+although no benchmark we surveyed measures coherence and no agentic system enforces it.
+For the predictive
 distributions these models emit, imposing coherence instead requires dependence
 information the model never produced. Summing marginals independently is inexpensive and
 does not increase with cross-series dependence, and a copula lowers the cost further,
