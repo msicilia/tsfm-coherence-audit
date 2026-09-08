@@ -64,7 +64,7 @@ satisfy linear coupling constraints across series or across time. We evaluate ei
 hierarchies and six foundation models zero-shot, finding most aggregate nodes incoherent
 on six, at rates independent of accuracy and size. Coherence is recoverable only by
 overwriting each aggregate forecast with the sum of its parts, which costs little
-accuracy but does not repair the model. Comparable rates appear in a classical model, a
+accuracy but does not alter the model. Comparable rates appear in a classical model, a
 gradient-boosted tree, and a neural network fit jointly to the hierarchy. All models
 contradict themselves when asked for monthly and annual forecasts of one series, and
 their aggregated monthly forecasts outperform the direct annual one. For the predictive
@@ -120,7 +120,7 @@ the agentic systems recently proposed to orchestrate such models supply
 one~\citep{atsf2026,nexus2026,dcats2025}: they organise selection, reasoning and data
 curation around the base forecaster and leave the forecasts it emits unconstrained.
 Coherence is therefore violated by construction, regardless of model quality, and is
-repaired only by an explicit reconciliation or assembly step.
+restored only by an explicit reconciliation or assembly step.
 
 Two further results frame this one. The first concerns what benchmarks currently
 measure. Foundation-model accuracy is highly heterogeneous: on the same data a
@@ -302,7 +302,7 @@ not do from what it cannot do.
 Within those classes the exemplars are chosen for measurability. Hierarchical
 coherence is the best-instrumented coupling constraint: it has a canonical linear
 formalization through $S$, public benchmark hierarchies, and an established
-reconciliation literature against which the repair can be judged; its siblings, such
+reconciliation literature against which the correction can be judged; its siblings, such
 as no-arbitrage or physical conservation, have no comparable public benchmarks.
 Temporal coherence is included as a second coupling exemplar precisely because it
 requires no second series, which removes the objection that a hierarchy should simply
