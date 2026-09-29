@@ -287,7 +287,7 @@ interpretable by construction, having few parameters, closed-form fitting and
 an emitted rationale, though we treat that as a design property rather than a
 benchmarked quantity.
 
-\subsection{Which constraints we audit, and why}
+\subsection{Constraints audited}
 \label{sec:whichconstraints}
 The restrictions collected in
 $\mathcal{C}$ fall into two classes, and that division is itself the object of study.
@@ -412,7 +412,7 @@ confidence intervals, and win-rates against each foundation model.
 \section{Results}
 \label{sec:results}
 
-\subsection{Hierarchical coherence is violated by every model we test}
+\subsection{Incoherence across models and hierarchies}
 \label{sec:coherence}
 We forecast each node of eight real hierarchies independently with six foundation
 models (TinyTimeMixer, Chronos-Bolt, Chronos-Bolt-Base, Chronos-2, Moirai and TimesFM),
@@ -512,7 +512,7 @@ affords. Bottom-up, which requires no estimation, remains the robust choice.
 
 \input{tables/recon}
 
-\subsection{The same failure without a second series: temporal coherence}
+\subsection{Temporal coherence within a single series}
 \label{sec:temporal}
 A natural objection to Section~\ref{sec:coherence} is that a hierarchy should simply be
 modelled jointly, so the failure indicts the deployment rather than the paradigm. We
@@ -549,7 +549,7 @@ linear coupling of any kind, including a series coupled to itself.
 
 \input{tables/temporal}
 
-\subsection{Probabilistic coherence is harder than point coherence}
+\subsection{Probabilistic coherence}
 \label{sec:probcoh}
 Foundation models emit predictive quantiles as well as point forecasts, and
 coherence is more demanding for the full distribution: the predictive distribution at an
@@ -628,7 +628,7 @@ independent replicates of its dependence.}
 \label{fig:probcohlaw}
 \end{figure}
 
-\subsection{Non-negativity is satisfied by one foundation model and not the others}
+\subsection{Non-negativity}
 \label{sec:nonneg}
 The second constraint is per-series, and unlike coherence its treatment differs
 sharply between models (Table~\ref{tab:nonneg}). On intermittent M5 retail series,
@@ -653,7 +653,7 @@ closes for all by projection, whereas coherence is closed by none of them.
 
 \input{tables/nonneg}
 
-\subsection{Accuracy is heterogeneous across foundation models}
+\subsection{Accuracy across foundation models}
 \label{sec:frontier}
 Finally we measure accuracy against per-series history length, an axis most
 foundation-model benchmarks hold fixed and that only concurrent work has begun to
@@ -715,7 +715,7 @@ data regime, the history length, and the features available, whereas the coheren
 failure, which afflicts these same global models
 (Section~\ref{sec:coherence}), moves with none of them.
 
-\paragraph{CAA ablation: feasibility comes from projection, not selection}
+\paragraph{CAA ablation}
 Because CAA both selects a base and projects it, we isolate the two on a
 capacity-constrained variant of M4-Monthly (a per-series ceiling). Conditioning the
 selection on the declared capacity constraint changes the chosen base on $27\%$ of
