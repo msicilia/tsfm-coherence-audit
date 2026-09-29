@@ -179,7 +179,13 @@ do not claim constraint-conditioned selection as a source of accuracy.
 % ============================================================
 \section{Related work}
 \label{sec:related}
-\paragraph{Simple-baseline critiques.} DLinear~\citep{dlinear2023} showed linear
+Five lines of work bear on this paper, and they do not bear on it equally. The first two
+concern how foundation models are currently evaluated; we take their findings as
+established and draw methodological choices from them rather than results. The last three
+concern constraint satisfaction, and it is against those that the coherence contribution
+has to be placed.
+
+\paragraph{Simple-baseline critiques} DLinear~\citep{dlinear2023} showed linear
 projections rival transformers, and \citet{toner2024linear} showed that popular linear
 forecasters reduce to closed-form regression. \citet{benchmarking2026} make the
 complementary methodological argument that current benchmarking practice does not
@@ -187,7 +193,7 @@ isolate which design choices produce the differences it reports. We take this li
 evidence as established and do not revisit it; it is, however, why we report accuracy
 with per-series tests rather than aggregate rankings (Section~\ref{sec:frontier}).
 
-\paragraph{Cost frontiers and the history axis.} The cost-versus-accuracy axis is
+\paragraph{Cost frontiers and the history axis} The cost-versus-accuracy axis is
 already well studied: \citet{operationalviability2026} route each series to a model
 class using empirically derived features and report a large inference-cost saving, and
 \citet{energyload2026} evaluate under a fixed consumer-hardware budget while sweeping
@@ -200,7 +206,7 @@ axes, namely that the small-versus-foundation verdict is not fixed, and applied 
 data scarcity concur~\citep{enrolment2026}. None of this work connects the finding to
 coherence.
 
-\paragraph{Agentic selection.} TimeSeriesScientist~\citep{tsci2025} diagnoses,
+\paragraph{Agentic selection} TimeSeriesScientist~\citep{tsci2025} diagnoses,
 selects and ensembles classical models; Nexus~\citep{nexus2026} decomposes forecasting
 into reasoning stages that fold in textual context; DCATS~\citep{dcats2025} uses
 metadata to curate the training data rather than to choose a model. Surveying the
@@ -208,7 +214,7 @@ paradigm, \citet{atsf2026} name the incorporation of preferences and constraints
 open opportunity rather than a solved problem. Consistent with that assessment, none of
 the systems we surveyed enforces hard constraints on the forecasts it emits.
 
-\paragraph{Forecast reconciliation.} Reconciling incoherent forecasts onto a
+\paragraph{Forecast reconciliation} Reconciling incoherent forecasts onto a
 hierarchy is a mature literature: bottom-up and top-down schemes, the
 trace-minimization optimum MinT~\citep{mint2019}, and the probabilistic extension with
 its scoring-rule evaluation~\citep{probrecon2023}, surveyed by \citet{hfreview2024}. We
@@ -219,7 +225,7 @@ reconciliation a frozen zero-shot model needs, whether the need varies with its
 accuracy or size, and what it costs. These questions only arise once the base
 forecaster is one the analyst cannot refit.
 
-\paragraph{Constrained models.} ProbHardE2E~\citep{probharde2e2025} enforces hard
+\paragraph{Constrained models} ProbHardE2E~\citep{probharde2e2025} enforces hard
 constraints through a differentiable projection layer trained end-to-end, and argues
 explicitly against satisfying constraints by post-processing or at inference;
 \citet{doumeche2025} give a unified treatment of linear constraints, hierarchical
@@ -234,9 +240,12 @@ forecaster, and we measure what that costs: for point reconciliation it is small
 (Section~\ref{sec:coherence}), and for predictive distributions it is the subject of
 Section~\ref{sec:probcoh}.
 
-No prior line of work combines a structural-coherence audit across multiple
-foundation models with a system that returns forecasts guaranteed to satisfy the
-declared constraints (Table~\ref{tab:gap}).
+These lines converge on a setting none of them covers. Reconciliation assumes a base
+forecaster the analyst fits and can inspect; constrained training assumes one the analyst
+trains; benchmarks and agentic systems assume the question does not arise. A frozen
+zero-shot base, chosen from several whose coherence behaviour has never been measured,
+falls outside all three. That setting is what we audit, and what constraint-aware
+assembly is built for (Table~\ref{tab:gap}).
 
 \begin{table}[t]
 \centering
@@ -254,8 +263,9 @@ Reconciliation methods              & \checkmark & \ding{55} & single-base \\
 CAA (this paper)                   & \checkmark & \checkmark & \checkmark \\
 \bottomrule
 \end{tabular}
-\caption{A multi-model structural-coherence audit combined with guaranteed
-feasibility enforcement is, to our knowledge, not addressed by existing work.}
+\caption{Existing work assumes either a base forecaster the analyst fits or one the
+analyst trains. A frozen zero-shot base, audited across models and returned feasible by
+construction, is to our knowledge not addressed.}
 \label{tab:gap}
 \end{table}
 
@@ -361,7 +371,7 @@ predictive quantiles, so it is excluded from the probabilistic study rather than
 assigned a degenerate distribution, and the remaining experiments use the five models
 that supply quantiles. Three experimental settings isolate the reported findings.
 
-\paragraph{Coherence (\S\ref{sec:coherence}--\ref{sec:probcoh}).} On eight real
+\paragraph{Coherence (\S\ref{sec:coherence}--\ref{sec:probcoh})} On eight real
 hierarchies we forecast every node independently and measure the fraction of aggregate
 nodes whose forecasts differ from the sum of their children by more than $1\%$. Six are
 Tourism (small and large)~\citep{data_tourism}, Labour, Traffic and Wiki2, all from
@@ -389,12 +399,12 @@ independent marginals and after two couplings that impose historical cross-serie
 dependence, an ensemble-copula-coupling (Schaake) shuffle and a fitted Gaussian
 copula, and score with CRPS over up to eight rolling origins.
 
-\paragraph{Non-negativity (\S\ref{sec:nonneg}).} On strictly non-negative series,
+\paragraph{Non-negativity (\S\ref{sec:nonneg})} On strictly non-negative series,
 M3~\citep{data_m3} (values far from zero) and M5 retail~\citep{data_m5} (intermittent
 counts near zero), we measure how often each foundation model's median and lower
 predictive band fall below zero.
 
-\paragraph{Accuracy versus history (\S\ref{sec:frontier}).} On M4 monthly and
+\paragraph{Accuracy versus history (\S\ref{sec:frontier})} On M4 monthly and
 quarterly~\citep{data_m4} and M5 daily we hold the test window fixed and truncate the
 available history to $T \in \{12,24,48,96,192,384\}$; only the input history changes.
 We report mean MASE against $T$ with eight rolling origins, $95\%$ bootstrap
@@ -707,7 +717,7 @@ data regime, the history length, and the features available, whereas the coheren
 failure, which afflicts these same global models
 (Section~\ref{sec:coherence}), moves with none of them.
 
-\paragraph{CAA ablation: feasibility comes from projection, not selection.}
+\paragraph{CAA ablation: feasibility comes from projection, not selection}
 Because CAA both selects a base and projects it, we isolate the two on a
 capacity-constrained variant of M4-Monthly (a per-series ceiling). Conditioning the
 selection on the declared capacity constraint changes the chosen base on $27\%$ of
@@ -774,7 +784,7 @@ ingredient a per-series model never supplies. A copula must reconstruct that joi
 history and can only approximate it, so exact probabilistic coherence, unlike point
 coherence, remains out of reach.
 
-\paragraph{Limitations.} The coherence finding is well supported by eight hierarchies,
+\paragraph{Limitations} The coherence finding is well supported by eight hierarchies,
 six foundation models plus two trained global baselines, and point-reconciliation
 accuracy over up to eight rolling origins with bootstrap confidence intervals. Point
 reconciliation uses bottom-up: we found MinTrace-OLS unstable on Wiki2 and rarely better
