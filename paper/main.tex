@@ -65,18 +65,16 @@ time-series foundation models are proposed as general-purpose forecasters. We au
 foundation models zero-shot on eight hierarchies, with a classical model and two jointly
 trained models. Most aggregate nodes are incoherent on six of the eight, independent of
 accuracy and size. The classical and jointly trained models fail at comparable rates,
-and so does a single series forecast at monthly and annual scales. We then measure what
-enforcing coherence costs. Bottom-up reconciliation undoes the failure for point
-forecasts at a small loss of accuracy, and is more reliable than trace-minimisation or a
-learned reconciler. The same move does not extend to the predictive distributions, which
-need the dependence between series that per-series marginals do not determine. Summing
-the marginals independently is inexpensive, and a copula does better, but only by taking
-that dependence from history. One model satisfies non-negativity exactly, so only
-coupling constraints defeat them all. An explicit projection applied to the most
-accurate base is therefore the operative step. Accuracy identifies that base only
-loosely, varying more across the foundation models than between them and a ten-parameter
-baseline. Constraint-aware assembly supplies the projection, and an ablation attributes
-the guarantee to it rather than to the model selection.
+and so does a single series forecast at monthly and annual scales. We then examine remedies. Bottom-up
+reconciliation undoes the failure for point forecasts at a small loss of accuracy, and
+more reliably than trace-minimisation or a learned reconciler. It does not extend to the
+predictive distributions, which need the dependence between series that per-series
+marginals do not determine, and that a copula can only take from history. One model
+satisfies non-negativity exactly, so only coupling constraints defeat them all. Accuracy
+will not identify the best base, varying more across the foundation models than between
+them and a ten-parameter baseline. An explicit projection applied to that base is
+therefore the operative step, which constraint-aware assembly supplies, with an ablation
+attributing its guarantee to the projection rather than the model selection.
 \end{abstract}
 
 \begin{keyword}
