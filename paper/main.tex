@@ -66,17 +66,17 @@ foundation models zero-shot on eight hierarchies, with a classical model and two
 trained models. Most aggregate nodes are incoherent on six of the eight, independent of
 accuracy and size. The classical and jointly trained models fail at comparable rates,
 and so does a single series forecast at monthly and annual scales. We then measure what
-enforcing coherence costs. Bottom-up reconciliation restores it at a small cost in
-accuracy, and is more reliable than trace-minimisation or a learned reconciler.
-Distributional coherence also requires the dependence between series, which per-series
-marginals do not determine. Summing them independently is inexpensive, and a copula does
-better where dependence is strongest, but only by estimating it from history.
-Non-negativity, a per-series constraint, is satisfied exactly by one model, so the
-failure is confined to constraints that couple outputs. Accuracy varies more across the
-foundation models than between them and a ten-parameter baseline, and so ranks them
-unreliably. Point coherence therefore needs a projection applied to the most accurate
-base, which constraint-aware assembly supplies. An ablation attributes its guarantee to
-the projection, not the model selection.
+enforcing coherence costs. Bottom-up reconciliation undoes the failure for point
+forecasts at a small loss of accuracy, and is more reliable than trace-minimisation or a
+learned reconciler. The same move does not extend to the predictive distributions, which
+need the dependence between series that per-series marginals do not determine. Summing
+the marginals independently is inexpensive, and a copula does better, but only by taking
+that dependence from history. One model satisfies non-negativity exactly, so only
+coupling constraints defeat them all. An explicit projection applied to the most
+accurate base is therefore the operative step. Accuracy identifies that base only
+loosely, varying more across the foundation models than between them and a ten-parameter
+baseline. Constraint-aware assembly supplies the projection, and an ablation attributes
+the guarantee to it rather than to the model selection.
 \end{abstract}
 
 \begin{keyword}
