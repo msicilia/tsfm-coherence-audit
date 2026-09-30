@@ -63,7 +63,7 @@ not constrain the relations among their outputs, and so give no guarantee of sat
 linear coupling constraints. We apply six models zero-shot to eight hierarchies, and
 find most aggregate nodes incoherent on six of the eight, independent of accuracy and
 size. We then find comparable rates in a classical model and two trained global
-models, so the failure is not specific to pretrained or zero-shot models. A model asked
+models, so the failure is a property of any unconstrained forecaster. A model asked
 for monthly and annual forecasts of one series also contradicts itself. For point forecasts coherence can be imposed on the output exactly, by
 overwriting each aggregate with the sum of its parts, at little cost in accuracy,
 although no benchmark or agentic system we surveyed measures or enforces it. For the
