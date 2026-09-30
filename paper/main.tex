@@ -58,8 +58,8 @@ A Multi-Model Audit of Coherence Failures}
 %% Authors intentionally omitted for double-anonymized review (see title_page.tex).
 
 \begin{abstract}
-Time-series foundation models are proposed as general-purpose forecasters, but they leave
-the relations among their outputs unconstrained, and so give no guarantee of satisfying
+Time-series foundation models are proposed as general-purpose forecasters, but they do
+not constrain the relations among their outputs, and so give no guarantee of satisfying
 linear coupling constraints. Across eight hierarchies and six models applied zero-shot,
 most aggregate nodes are incoherent on six, independent of accuracy and size.
 Two comparisons delimit the finding. A classical model and two trained global models are
@@ -76,7 +76,7 @@ open. Coherence is also the more stable criterion for ranking models, since accu
 more among the foundation models than between them and a ten-parameter baseline.
 Non-negativity, which binds each series alone, is satisfied by one model, so the failure is
 confined to constraints that couple outputs. We argue for constraint-aware assembly, which enforces
-declared constraints by explicit projection, show by ablation that the guarantee derives
+declared constraints by projection, show by ablation that the guarantee derives
 from it, and release a reproducible harness.
 \end{abstract}
 
@@ -101,7 +101,7 @@ modelling. Benchmarks such as GIFT-Eval~\citep{gifteval2024} and
 fev-bench~\citep{fevbench2025} report them competitive
 with, and sometimes dominating, tuned statistical baselines.
 
-We do not dispute those results, but they leave an important property unmeasured.
+We do not dispute those results, but they do not measure an important property.
 Our central observation is structural rather than empirical: a model that forecasts each
 series independently cannot satisfy a \emph{linear coupling} constraint, however
 accurate each individual forecast is. The most familiar case is hierarchical
@@ -117,7 +117,7 @@ to violate the constraint, and we confirm that two trained global models do, at 
 comparable to the per-series ones. Per-series zero-shot forecasting is the clearest case of
 that failure. The agentic systems recently proposed to orchestrate such models do not supply one
 either~\citep{atsf2026,nexus2026,dcats2025}. They organise selection, reasoning and data
-curation around the base forecaster, and leave the forecasts it emits unconstrained.
+curation around the base forecaster, and do not constrain the forecasts it emits.
 Coherence is therefore violated by construction, regardless of model quality, and is
 restored only by an explicit reconciliation or assembly step.
 
@@ -185,7 +185,7 @@ do not claim constraint-conditioned selection as a source of accuracy.
 Five lines of work bear on this paper. The first two concern how foundation models are
 currently evaluated. We take their findings as established and draw methodological
 choices from them rather than results. The last three concern constraint satisfaction,
-and they are where the coherence contribution sits.
+and the coherence contribution is positioned against them.
 
 \paragraph{Simple-baseline critiques} DLinear~\citep{dlinear2023} showed linear
 projections rival transformers, and \citet{toner2024linear} showed that popular linear
@@ -320,7 +320,7 @@ Temporal coherence is included as a second coupling exemplar because it
 requires no second series, which removes the objection that a hierarchy should simply
 have been modelled jointly (Section~\ref{sec:temporal}).
 Non-negativity is the cleanest within-series constraint: its ground truth is
-unambiguous, and it binds on intermittent demand, where forecasts sit
+unambiguous, and it binds on intermittent demand, where forecasts lie
 against the boundary. Capacity and monotonicity are stated above to show
 the generality of the formulation; capacity is used in the ablation of
 Section~\ref{sec:frontier}, but neither is audited separately, because realistic
@@ -336,7 +336,7 @@ which foundation model is used.
 
 \subsection{Constraint-aware assembly}
 \label{sec:caa}
-CAA runs four stages: (1) \emph{diagnose} statistical features of $y_{1:T}$
+CAA proceeds in four stages: (1) \emph{diagnose} statistical features of $y_{1:T}$
 (trend, seasonal strength, intermittency, length); (2) \emph{read} the declared
 constraint set $\mathcal{C}$; (3) \emph{assemble} a small model from an
 interpretable library (seasonal naive, Theta, ETS, ARIMA, and Croston for intermittent
@@ -347,7 +347,7 @@ guaranteed feasible, not merely plausible. That property distinguishes CAA from
 the agentic prior art surveyed above, none of which enforces hard constraints. The
 guarantee comes from the projection step. An ablation (Section~\ref{sec:frontier}) that
 also conditions the selection in stage~(3) on the declared constraints finds it
-changes the chosen base on $27\%$ of series yet leaves accuracy unchanged
+changes the chosen base on $27\%$ of series yet does not change accuracy
 (paired $p=0.97$), while feasibility is achieved by projection in either case. We
 therefore present CAA as constraint-aware projection of a selected
 interpretable base, and do not claim constraint-conditioned selection as a benefit.
@@ -436,7 +436,7 @@ Averaged over the foundation models, the typical relative gap at an aggregate no
 $11.6\%$ on Wiki2 and $13.5\%$ on TourismLarge, and $4.2$--$4.9\%$ on TourismSmall,
 Traffic and Solar. On those five the typical gap is four to thirteen times the $1\%$
 tolerance, so the counts do not depend on where it is drawn. M5 retail is the
-exception among the affected hierarchies, at $1.7\%$: there the mismatches sit close to
+exception among the affected hierarchies, at $1.7\%$: there the mismatches lie close to
 the tolerance and a materially looser one would lower the count. On Labour ($0.6\%$) and
 Electricity ($0.8\%$) the typical gap falls below the tolerance altogether, which is the
 same common smooth component that makes them the two exceptions, measured directly
@@ -482,8 +482,8 @@ that costs. It costs little accuracy (Table~\ref{tab:recon}). Over up to eight r
 foundation model bottom-up leaves its accuracy close to the raw, incoherent forecast:
 for TimesFM the change is small on every hierarchy (e.g.\ TourismLarge $0.730 \to
 0.763$), and for Chronos-2, the most accurate base on Traffic,
-the change is negligible (Traffic $1.267 \to 1.269$). Those means run over every node,
-and bottom-up leaves the bottom-level forecasts untouched, so they understate the cost at
+the change is negligible (Traffic $1.267 \to 1.269$). Those means are taken over every node,
+and bottom-up does not change the bottom-level forecasts, so they understate the cost at
 the nodes reconciliation actually changes. Isolating the aggregates is exact for
 bottom-up, because the bottom-level error is identical before and after; the mean cost
 then rises from $+0.006$ to $+0.019$ MASE across the five quantile-emitting models, and
@@ -509,9 +509,9 @@ degrading to MASE above $2.5$ on Wiki2; its shrinkage variant restores stability
 does not improve on bottom-up. ERM is stable on only one of the eight hierarchies
 (Traffic, and even there it is far worse than bottom-up, $3.13$ versus $1.27$) and
 diverges on the rest (Table~\ref{tab:recon}, ``unst.''). A learned reconciler needs more
-signal than a small hierarchy read at a few origins provides; where MinTrace-OLS
+signal than a small hierarchy observed at a few origins provides; where MinTrace-OLS
 is reported stable elsewhere, it is on larger in-sample panels than a frozen base
-affords. Bottom-up, which requires no estimation, remains the robust choice.
+allows. Bottom-up, which requires no estimation, remains the robust choice.
 
 \input{tables/recon}
 
@@ -589,10 +589,10 @@ was the lone high-dependence point, and the pooled fit, which counts each hierar
 per model. On those six the pooled slope was $+0.46$ at $p=0.015$, but the same six
 fitted at hierarchy level give $p=0.27$. The apparent law was already not significant
 once the replication was counted correctly, and the two additional high-dependence
-hierarchies remove what was left of it. Whatever makes independent summation expensive on
+hierarchies remove what remained of it. Whatever makes independent summation expensive on
 Traffic, it is not cross-series dependence as such.
 
-The coupling, however, does pay. Imposing the historical dependence
+The coupling, however, does reduce the cost. Imposing the historical dependence
 before summing, either by an ensemble-copula-coupling (Schaake) shuffle or by a fitted
 Gaussian copula, lowers the CRPS relative to independent summation on six of the eight
 hierarchies, and does so more where the series are more dependent. The coupled cost
@@ -606,7 +606,7 @@ $1.36$), and on Traffic the coupling recovers most of the independent-summation 
 (TimesFM $1.56 \to 1.20$); the two couplings agree closely throughout. A per-series
 foundation model supplies only marginals, never a joint distribution. Its distributional
 forecast therefore omits the cross-series structure a copula restores, and the
-restoration pays off most where that structure is strongest.
+restoration is most beneficial where that structure is strongest.
 Probabilistic coherence for foundation models is therefore an open problem, not a solved
 one, and a sharper limitation than the point case, where reconciliation suffices. Unlike
 the cost trend it replaces, this effect is visible across the eight hierarchies
@@ -635,7 +635,7 @@ independent replicates of its dependence.}
 \label{sec:nonneg}
 The second constraint is per-series, and unlike coherence its treatment differs
 sharply between models (Table~\ref{tab:nonneg}). On intermittent M5 retail series,
-whose counts sit at zero, four of the five foundation models emit negative demand.
+whose counts lie at zero, four of the five foundation models emit negative demand.
 The severity spans a wide range: Moirai's median forecast is negative on $18.0\%$ of
 series, Chronos-Bolt on $13.0\%$, and Chronos-2 on $0.9\%$, while TimesFM never does,
 because it applies a built-in positivity heuristic. Lower predictive bands are worse
@@ -650,7 +650,7 @@ tenfold relative to Chronos-Bolt ($13.0\%\to 0.9\%$) yet improves the
 negative lower band only marginally ($72.2\%\to 67.7\%$), so a newer model still
 cannot be
 deployed on non-negative data without an explicit projection. Non-negativity is
-therefore a deployment gap that some models close and others leave open, and which CAA
+therefore a deployment gap that some models address and others do not, and which CAA
 closes for all by projection, whereas coherence is closed by none of them.
 
 
@@ -711,12 +711,12 @@ expected to dominate, the covariate-free LightGBM and TCN are in fact outperform
 leading foundation models. On Electricity the most accurate forecast is Chronos-2
 ($0.698$ MASE), against $1.00$ for the TCN and $1.12$ for LightGBM, and the ordering is
 similar on Solar. This does not make foundation models categorically better: a global
-model supplied with the exogenous covariates these series carry (calendar, weather) can
+model supplied with the exogenous covariates available for these series (calendar, weather) can
 overtake a foundation model on the same data, so the ranking is feature-dependent as
-well as regime-dependent. The accuracy result moves with the
+well as regime-dependent. The accuracy result varies with the
 data regime, the history length, and the features available, whereas the coherence
 failure, which afflicts these same global models
-(Section~\ref{sec:coherence}), moves with none of them.
+(Section~\ref{sec:coherence}), varies with none of them.
 
 \paragraph{CAA ablation}
 Because CAA both selects a base and projects it, we isolate the two on a
@@ -724,8 +724,8 @@ capacity-constrained variant of M4-Monthly (a per-series ceiling). Conditioning 
 selection on the declared capacity constraint changes the chosen base on $27\%$ of
 series, but does not improve accuracy over a feature-only selection that is then
 projected (mean MASE $0.864$ vs $0.875$; paired Wilcoxon $p=0.97$), while both are
-exactly feasible because of the projection. Removing the projection instead leaves
-$9.9\%$ of forecast points above the ceiling. The feasibility guarantee is thus a
+exactly feasible because of the projection. Removing the projection instead allows
+$9.9\%$ of forecast points to exceed the ceiling. The feasibility guarantee is thus a
 property of the projection step, and we frame CAA accordingly.
 
 \input{tables/frontier}
@@ -735,7 +735,7 @@ property of the projection step, and we frame CAA accordingly.
 \includegraphics[width=\linewidth]{figures/frontier_study.pdf}
 \caption{Accuracy versus per-series history length with $95\%$ bootstrap confidence
 bands (eight rolling origins), five foundation models and AutoETS. On smooth M4 data
-(left, centre) the curves cross repeatedly and AutoETS runs through the middle of the
+(left, centre) the curves cross repeatedly and AutoETS lies within the
 foundation-model band; on intermittent M5 (right) all five foundation models separate
 cleanly below AutoETS. The ordering among foundation models is itself larger than the
 gap to the classical baseline, unlike the coherence result, which is model-agnostic.}
@@ -747,7 +747,7 @@ gap to the classical baseline, unlike the coherence result, which is model-agnos
 \label{sec:discussion}
 Our central finding is structural and robust. A foundation model does not constrain its
 outputs to satisfy a linear coupling relation among them, so it gives no guarantee of
-satisfying one. On real hierarchies this leaves the great majority of aggregate nodes
+satisfying one. On real hierarchies the great majority of aggregate nodes are
 incoherent, for the most accurate model as much as the least. It holds even for modern
 foundation models such as Chronos-2~\citep{chronos2_2025}, which now accept past and
 future covariates. Covariates condition each series' own forecast, but they do not couple
@@ -761,11 +761,11 @@ rates (Section~\ref{sec:coherence}), so the failure belongs to any forecaster wh
 outputs are not projected onto the coupling set. It does
 not depend on which model is used or on its accuracy. It is therefore a property of
 unconstrained forecasting rather than of any particular network, and we do not claim it
-as a defect peculiar to foundation models. It matters for them because of the deployment
-pattern they invite. They are offered as drop-in forecasters that require no per-series
-modelling, they are assessed by benchmarks that do not measure
-coherence~\citep{gifteval2024,fevbench2025}, they are wrapped by systems that do not
-enforce it~\citep{atsf2026,nexus2026,dcats2025}, and they are adopted by analysts who
+as a defect peculiar to foundation models. It matters for them because of the way they
+are deployed. They are offered as general-purpose forecasters that require no
+per-series modelling, they are assessed by benchmarks that do not measure
+coherence~\citep{gifteval2024,fevbench2025}, they are embedded in systems that do not
+enforce it~\citep{atsf2026,nexus2026,dcats2025}, and they are used by analysts who
 cannot refit them. The property has long been known. The exposure to it is recent. Our two
 supporting results behave differently. Per-series accuracy is sufficiently heterogeneous
 that a ten-parameter classical model outperforms Moirai at every history length on the
@@ -819,7 +819,7 @@ per-series forecasting but general to any unconstrained forecaster. Asked for bo
 annual forecasts of a single
 series, every model contradicts itself on $37$--$81\%$ of aggregates, where no second
 series exists to which the failure could be attributed. Restoring distributional coherence is harder still:
-summing independent marginals usually carries little cost and does not scale with cross-series
+summing independent marginals usually costs little and does not scale with cross-series
 dependence, but it omits the joint distribution a per-series model never supplies, which
 a copula can only approximate. Two supporting results underline that coherence is the
 robust, model-agnostic limitation: per-series accuracy is too heterogeneous across
