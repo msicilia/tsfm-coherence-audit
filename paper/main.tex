@@ -66,18 +66,18 @@ foundation models zero-shot on eight hierarchies, with a classical model and two
 trained models. Most aggregate nodes are incoherent on six of the eight, independent of
 accuracy and size. The classical and jointly trained models fail at comparable rates,
 and so does a single series forecast at monthly and annual scales. We then measure the
-cost of enforcing coherence on the output. Overwriting each aggregate with the sum of
-its parts imposes coherence exactly. Accuracy falls slightly. Neither the benchmarks nor
-the systems we surveyed impose it. These models also emit predictive distributions.
-Making those coherent needs the dependence between series. The models never report it.
-Summing marginals independently is inexpensive. A copula does better where dependence is
-strongest. It must estimate that dependence from history. We also audit non-negativity,
-a per-series constraint. One model satisfies it exactly, so these forecasters do not
+cost of enforcing coherence. Overwriting each aggregate with the sum of its parts
+imposes coherence exactly, with a small loss of accuracy, yet no benchmark or system we
+surveyed enforces it. The same models also emit predictive distributions, and making
+those coherent requires the dependence between series, which they never report. Summing
+the marginals independently is inexpensive, and a copula does better where dependence is
+strongest, but only by estimating it from history. We also audit non-negativity, which
+binds each series alone. One model satisfies it exactly, so these forecasters do not
 disregard constraints in general, only those that couple outputs. Accuracy is a less
-dependable basis for choosing among them. It varies more across the foundation models
-than between them and a ten-parameter baseline. Point coherence therefore needs a
-projection applied to the most accurate base. Constraint-aware assembly supplies that
-step. Probabilistic coherence remains open.
+dependable basis for choosing a base, varying more across the foundation models than
+between them and a ten-parameter baseline. Point coherence therefore needs a projection
+applied to the most accurate base, which constraint-aware assembly supplies, while
+probabilistic coherence remains open.
 \end{abstract}
 
 \begin{keyword}
