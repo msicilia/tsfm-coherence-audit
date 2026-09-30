@@ -58,12 +58,13 @@ A Multi-Model Audit of Coherence Failures}
 %% Authors intentionally omitted for double-anonymized review (see title_page.tex).
 
 \begin{abstract}
-Time-series foundation models are proposed as general-purpose forecasters, but they do
-not constrain the relations among their outputs, and so give no guarantee of satisfying
-linear coupling constraints. We apply six models zero-shot to eight hierarchies, and
+A forecaster that does not constrain the relations among its outputs cannot guarantee to
+satisfy a linear coupling constraint. This long-known property matters now because
+time-series foundation models are proposed as general-purpose forecasters and used
+without refitting. We apply six models zero-shot to eight hierarchies, and
 find most aggregate nodes incoherent on six of the eight, independent of accuracy and
-size. We then find comparable rates in a classical model and two trained global
-models, so the failure is a property of any unconstrained forecaster. A model also
+size. We then confirm comparable rates in a classical model and two trained global
+models. A model also
 contradicts itself when asked for monthly and annual forecasts of one series. For point forecasts coherence can be imposed on the output exactly, by
 overwriting each aggregate with the sum of its parts, at little cost in accuracy,
 although no benchmark or agentic system we surveyed measures or enforces it. For the
@@ -295,8 +296,8 @@ The restrictions collected in
 $\mathcal{C}$ fall into two classes, and that division is itself the object of study.
 \emph{Coupling} constraints bind several series simultaneously (hierarchical
 coherence, accounting identities, no-arbitrage relations, conservation laws), and a
-forecaster that maps each series independently to a forecast cannot satisfy them at
-all, however accurate it is. \emph{Within-series} constraints bind each series on its
+forecaster that maps each series independently cannot satisfy them at all, however
+accurate it is. \emph{Within-series} constraints bind each series on its
 own (non-negativity, capacity, monotonicity), and a per-series forecaster can
 satisfy them perfectly well; whether it does is an implementation decision rather than
 a structural one. We audit two exemplars of the coupling class, coherence across series and
@@ -362,10 +363,9 @@ test whether the coherence failure is specific to per-series or zero-shot foreca
 add two \emph{trained global} baselines, a gradient-boosted LightGBM over lagged and
 rolling features and a dilated causal-convolution TCN, each fit jointly across all
 series of a hierarchy. Chronos-2 additionally accepts past and future
-covariates~\citep{chronos2_2025}; we run every model on integer-indexed hierarchies
-without
-exogenous covariates so the eight hierarchies are directly comparable, and return to the
-role of covariates in Section~\ref{sec:discussion}.
+covariates~\citep{chronos2_2025}. We run every model on integer-indexed hierarchies
+without exogenous covariates, so the eight hierarchies are directly comparable, and we
+return to the role of covariates in Section~\ref{sec:discussion}.
 TinyTimeMixer enters the coherence audits only: it emits point forecasts without
 predictive quantiles, so it is excluded from the probabilistic study rather than
 assigned a degenerate distribution, and the remaining experiments use the five models
@@ -418,10 +418,10 @@ confidence intervals, and win-rates against each foundation model.
 \label{sec:coherence}
 We forecast each node of eight real hierarchies independently with six foundation
 models (TinyTimeMixer, Chronos-Bolt, Chronos-Bolt-Base, Chronos-2, Moirai and TimesFM),
-a small statistical model (AutoETS), and, to test whether the failure is specific to
-per-series forecasting, two trained global models that forecast every node
-jointly (a LightGBM and a dilated-convolution TCN, both fit across all series of the
-hierarchy). We measure the share of aggregate nodes whose forecasts do not equal the
+a small statistical model (AutoETS), and two trained global models that forecast every
+node jointly (a LightGBM and a dilated-convolution TCN, both fit across all series of
+the hierarchy). The global models test whether the failure is specific to per-series
+forecasting. We measure the share of aggregate nodes whose forecasts do not equal the
 sum of their children (relative gap above $1\%$). Table~\ref{tab:coherence} shows that on
 six of the eight hierarchies the great majority of aggregate nodes are incoherent, at
 $68.8$--$100\%$ for every foundation model on those six, TinyTimeMixer aside. This
@@ -487,10 +487,9 @@ the nodes reconciliation actually changes. Isolating the aggregates is exact for
 bottom-up, because the bottom-level error is identical before and after; the mean cost
 then rises from $+0.006$ to $+0.019$ MASE across the five quantile-emitting models, and
 is largest on Traffic ($+0.11$), where aggregates are only $3.4\%$ of nodes. Exact
-coherence is therefore obtained at a small but non-zero cost. CAA, which assembles a small interpretable
-base and
-reconciles it, is coherent by construction and competitive on the smooth hierarchies,
-but it is never the single most accurate coherent option: the best coherent forecast
+coherence is therefore obtained at a small but non-zero cost. CAA assembles a small interpretable base and reconciles it. It is coherent by
+construction and competitive on the smooth hierarchies, but never the single most
+accurate coherent option. The best coherent forecast
 is a reconciled foundation model on all eight hierarchies. The practical
 implication is consistent across hierarchies: raw per-series
 foundation-model forecasts should not be deployed on a hierarchy without an explicit
@@ -529,9 +528,8 @@ jointly.
 
 The failure persists (Table~\ref{tab:temporal}). Across $400$ M4-Monthly series and
 four rolling origins, every foundation model contradicts itself on $37$--$81\%$ of
-aggregate nodes; the mean over all models and levels is $60\%$. Even TimesFM, the one
-model that satisfies non-negativity exactly (Section~\ref{sec:nonneg}), is incoherent
-on $37$--$61\%$ of nodes here. Incoherence also grows with the aggregation factor: the
+aggregate nodes; the mean over all models and levels is $60\%$. TimesFM satisfies non-negativity exactly (Section~\ref{sec:nonneg}), yet it is
+incoherent on $37$--$61\%$ of nodes here. Incoherence also grows with the aggregation factor: the
 further apart the two views of the same series, the more the model disagrees with
 itself, rising for Chronos-2 from $37\%$ at the bi-monthly level to $65\%$ at the
 annual one.
@@ -683,11 +681,10 @@ the Benjamini--Hochberg procedure. The $150$ comparisons pit two small baselines
 (AutoETS and CAA) against the five foundation models at each of the $15$
 dataset\,$\times$\,history cells, and $134$ remain significant at $q<0.05$.
 
-That population-level verdict should not be mistaken for a per-series one. A
-Diebold--Mariano test applied to each series individually, on the per-horizon loss
-differentials and with the Harvey--Leybourne--Newbold small-sample correction that the
-per-series MASE used above cannot support, reaches a markedly more conservative
-conclusion. On the smooth M4 data the ten-parameter AutoETS and the foundation models
+That population-level verdict should not be mistaken for a per-series one. We also apply a
+Diebold--Mariano test to each series individually, on the per-horizon loss differentials
+and with the Harvey--Leybourne--Newbold small-sample correction that the per-series MASE
+used above cannot support. It reaches a markedly more conservative conclusion. On the smooth M4 data the ten-parameter AutoETS and the foundation models
 are statistically indistinguishable on about $81\%$ of individual series, rising above
 $90\%$ at some history lengths. On intermittent M5 the foundation models are
 significantly more accurate on $44$--$56\%$ of series, and the indistinguishable share
@@ -771,8 +768,8 @@ that a ten-parameter classical model outperforms Moirai at every history length 
 smooth M4 data yet is less accurate than TimesFM at nearly all of them, and
 non-negativity is enforced by one model and not the others. Neither gives a
 stable answer, whereas coherence does. A
-forecasting system intended for hierarchical or otherwise constrained data therefore
-should not treat a foundation model as a complete solution: it requires an explicit
+forecasting system for hierarchical or otherwise constrained data should therefore not
+treat a foundation model as a complete solution. It requires an explicit
 reconciliation or projection step, applied to whichever base is most accurate,
 whether a reconciled foundation model or a small interpretable one. CAA supplies that
 step by construction. The probabilistic case is harder. For point forecasts the reconciliation step is nearly costless, and
@@ -800,12 +797,11 @@ characterisation of when independent summation is expensive, Traffic being the o
 costly case, remains open.
 Running Moirai required a CUDA-13.0 build of the framework: the default CUDA-12.8
 build cannot just-in-time compile kernels for the sm\_121 accelerator used here, a
-toolkit limitation rather than a model property. The accuracy-heterogeneity comparison
-uses paired Wilcoxon
-signed-rank tests with Benjamini--Hochberg false-discovery control, complemented by
-per-series Diebold--Mariano tests on per-horizon losses; the latter are computed on a
-subsample ($178$--$392$ series per dataset after filtering) rather
-than the full panel.
+toolkit limitation rather than a model property. The accuracy-heterogeneity comparison uses paired
+Wilcoxon signed-rank tests with Benjamini--Hochberg false-discovery control,
+complemented by per-series Diebold--Mariano tests on per-horizon losses. We compute the
+latter on a subsample ($178$--$392$ series per dataset after filtering) rather than the
+full panel.
 
 \section{Conclusions}
 \label{sec:conclusions}
@@ -814,10 +810,9 @@ makes them structurally incapable of satisfying linear coupling constraints. On 
 incoherent for every foundation model, including the newest and
 most accurate, and at comparable rates for a classical model and for two trained global
 models fit jointly across every series. The failure is therefore not specific to
-per-series forecasting but general to any unconstrained forecaster. Asked for both monthly and
-annual forecasts of a single
-series, every model contradicts itself on $37$--$81\%$ of aggregates, where no second
-series exists to which the failure could be attributed. Restoring distributional coherence is harder still:
+per-series forecasting but general to any unconstrained forecaster. Every model contradicts itself on $37$--$81\%$ of aggregates when asked for both monthly
+and annual forecasts of a single series. No second series exists to which the failure
+could be attributed. Restoring distributional coherence is harder still:
 summing independent marginals usually costs little and does not scale with cross-series
 dependence, but it omits the joint distribution a per-series model never supplies, which
 a copula can only approximate. Two supporting results underline that coherence is the
