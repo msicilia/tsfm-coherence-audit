@@ -69,14 +69,14 @@ and so does a single series forecast at monthly and annual scales. We then measu
 enforcing coherence costs. Bottom-up reconciliation restores it at a small cost in
 accuracy, and is more reliable than trace-minimisation or a learned reconciler.
 Distributional coherence also requires the dependence between series, which per-series
-marginals cannot carry. Summing them independently is inexpensive, and a copula does
+marginals do not determine. Summing them independently is inexpensive, and a copula does
 better where dependence is strongest, but only by estimating it from history.
 Non-negativity, a per-series constraint, is satisfied exactly by one model, so the
 failure is confined to constraints that couple outputs. Accuracy varies more across the
-foundation models than between them and a ten-parameter baseline, so it cannot rank them
-reliably. Point coherence therefore needs a projection applied to the most accurate
-base, which constraint-aware assembly supplies. An ablation attributes the guarantee to
-that projection, not the selection. Probabilistic coherence remains open.
+foundation models than between them and a ten-parameter baseline, and so ranks them
+unreliably. Point coherence therefore needs a projection applied to the most accurate
+base, which constraint-aware assembly supplies. An ablation attributes its guarantee to
+the projection, not the model selection.
 \end{abstract}
 
 \begin{keyword}
