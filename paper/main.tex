@@ -67,17 +67,18 @@ trained models. Most aggregate nodes are incoherent on six of the eight, indepen
 accuracy and size. The classical and jointly trained models fail at comparable rates,
 and so does a single series forecast at monthly and annual scales. We then measure what
 enforcing coherence costs. Bottom-up reconciliation restores it at a small cost in
-accuracy, and is more reliable than trace-minimisation or a learned reconciler. No
-benchmark or system we surveyed enforces it. The same models also emit predictive distributions, and making
-those coherent requires the dependence between series, which they never report. Summing
-the marginals independently is inexpensive, and a copula does better where dependence is
+accuracy, and is more reliable than trace-minimisation or a learned reconciler.
+Foundation models also emit predictive distributions, and making those coherent requires
+the dependence between series, which they never report. Summing
+marginals independently is inexpensive, and a copula does better where dependence is
 strongest, but only by estimating it from history. We also audit non-negativity, which
 binds each series alone. One model satisfies it exactly, so these forecasters do not
 disregard constraints in general, only those that couple outputs. Accuracy is a less
-dependable basis for choosing a base, varying more across the foundation models than
-between them and a ten-parameter baseline. Point coherence therefore needs a projection
-applied to the most accurate base, which constraint-aware assembly supplies, while
-probabilistic coherence remains open.
+dependable basis for choosing a model, varying more across the foundation models than between
+them and a ten-parameter baseline. Point coherence therefore needs a projection
+applied to the most accurate base, which constraint-aware assembly supplies. An ablation
+attributes its guarantee to the projection, not the selection. Probabilistic coherence
+remains open.
 \end{abstract}
 
 \begin{keyword}
