@@ -71,8 +71,8 @@ accuracy, and is more reliable than trace-minimisation or a learned reconciler.
 Foundation models also emit predictive distributions, and making those coherent requires
 the dependence between series, which per-series marginals cannot carry. Summing
 marginals independently is inexpensive, and a copula does better where dependence is
-strongest, but only by estimating it from history. We also audit non-negativity, which
-binds each series alone. One model satisfies it exactly, so these forecasters do not
+strongest, but only by estimating it from history. We also audit non-negativity, a
+per-series constraint. One model satisfies it exactly, so these forecasters do not
 disregard constraints in general, only those that couple outputs. Accuracy is a less
 dependable basis for choosing a model, varying more across the foundation models than between
 them and a ten-parameter baseline. Point coherence therefore needs a projection
