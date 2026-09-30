@@ -69,7 +69,7 @@ and so does a single series forecast at monthly and annual scales. We then measu
 enforcing coherence costs. Bottom-up reconciliation restores it at a small cost in
 accuracy, and is more reliable than trace-minimisation or a learned reconciler.
 Foundation models also emit predictive distributions, and making those coherent requires
-the dependence between series, which they never report. Summing
+the dependence between series, which per-series marginals cannot carry. Summing
 marginals independently is inexpensive, and a copula does better where dependence is
 strongest, but only by estimating it from history. We also audit non-negativity, which
 binds each series alone. One model satisfies it exactly, so these forecasters do not
