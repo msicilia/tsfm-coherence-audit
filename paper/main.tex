@@ -62,13 +62,13 @@ Forecasts often must satisfy linear coupling constraints, such as a hierarchy's 
 summing to its total. A forecaster that does not constrain the relations among its
 outputs cannot guarantee to satisfy them. This long-known property matters now because
 time-series foundation models are proposed as general-purpose forecasters. We audit six
-foundation models zero-shot on eight hierarchies, alongside a classical model and two
+foundation models zero-shot on eight hierarchies, with a classical model and two
 jointly trained models, and test point and distributional reconciliation. Most aggregate
-nodes are incoherent on six of the eight, independent of accuracy and model size. The
+nodes are incoherent on six of the eight, independent of accuracy and size. The
 classical and jointly trained models fail at comparable rates, and so does a single
 series forecast at monthly and annual scales. For point forecasts, overwriting each
-aggregate with the sum of its parts imposes coherence exactly, at little cost in
-accuracy, although no benchmark or system we surveyed measures or enforces it.
+aggregate with the sum of its parts imposes coherence exactly, with a small loss of
+accuracy. Neither the benchmarks nor the systems we surveyed report or impose it.
 Distributional coherence requires the dependence between series, which these models do
 not report. Summing marginals independently is inexpensive, and a copula lowers the cost
 further where dependence is strongest, but only by estimating it from history. Accuracy
