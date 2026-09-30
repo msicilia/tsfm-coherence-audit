@@ -68,17 +68,15 @@ accuracy and size. The classical and jointly trained models fail at comparable r
 and so does a single series forecast at monthly and annual scales. We then measure what
 enforcing coherence costs. Bottom-up reconciliation restores it at a small cost in
 accuracy, and is more reliable than trace-minimisation or a learned reconciler.
-Foundation models also emit predictive distributions, and making those coherent requires
-the dependence between series, which per-series marginals cannot carry. Summing
-marginals independently is inexpensive, and a copula does better where dependence is
-strongest, but only by estimating it from history. We also audit non-negativity, a
-per-series constraint. One model satisfies it exactly, so these forecasters do not
-disregard constraints in general, only those that couple outputs. Accuracy is a less
-dependable basis for choosing a model, varying more across the foundation models than between
-them and a ten-parameter baseline. Point coherence therefore needs a projection
-applied to the most accurate base, which constraint-aware assembly supplies. An ablation
-attributes its guarantee to the projection, not the selection. Probabilistic coherence
-remains open.
+Distributional coherence also requires the dependence between series, which per-series
+marginals cannot carry. Summing them independently is inexpensive, and a copula does
+better where dependence is strongest, but only by estimating it from history.
+Non-negativity, a per-series constraint, is satisfied exactly by one model, so the
+failure is confined to constraints that couple outputs. Accuracy varies more across the
+foundation models than between them and a ten-parameter baseline, so it cannot rank them
+reliably. Point coherence therefore needs a projection applied to the most accurate
+base, which constraint-aware assembly supplies. An ablation attributes the guarantee to
+that projection, not the selection. Probabilistic coherence remains open.
 \end{abstract}
 
 \begin{keyword}
