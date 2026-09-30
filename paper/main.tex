@@ -65,19 +65,19 @@ time-series foundation models are proposed as general-purpose forecasters. We au
 foundation models zero-shot on eight hierarchies, with a classical model and two jointly
 trained models. Most aggregate nodes are incoherent on six of the eight, independent of
 accuracy and size. The classical and jointly trained models fail at comparable rates,
-and so does a single series forecast at monthly and annual scales. We then ask what
-correcting this costs. Overwriting each aggregate with the sum of its parts imposes
-coherence exactly, with a small loss of accuracy, yet neither the benchmarks nor the
-systems we surveyed impose it. The same models also emit predictive distributions, and
-making those coherent needs the dependence between series, which they never report.
-Summing marginals independently is inexpensive, and a copula does better where dependence
-is strongest, but only by estimating that dependence from history. Non-negativity, which
-binds each series alone, is satisfied by one model, so these forecasters do not disregard
-constraints in general, only those that couple outputs. Accuracy would be a less
-dependable basis for choosing among them, varying more across the foundation models than
-between them and a ten-parameter baseline. Probabilistic coherence therefore remains
-open, while point coherence needs a projection applied to the most accurate base, which
-constraint-aware assembly supplies.
+and so does a single series forecast at monthly and annual scales. We then measure the
+cost of enforcing coherence on the output. Overwriting each aggregate with the sum of
+its parts imposes coherence exactly. Accuracy falls slightly. Neither the benchmarks nor
+the systems we surveyed impose it. These models also emit predictive distributions.
+Making those coherent needs the dependence between series. The models never report it.
+Summing marginals independently is inexpensive. A copula does better where dependence is
+strongest. It must estimate that dependence from history. We also audit non-negativity,
+a per-series constraint. One model satisfies it exactly, so these forecasters do not
+disregard constraints in general, only those that couple outputs. Accuracy is a less
+dependable basis for choosing among them. It varies more across the foundation models
+than between them and a ten-parameter baseline. Point coherence therefore needs a
+projection applied to the most accurate base. Constraint-aware assembly supplies that
+step. Probabilistic coherence remains open.
 \end{abstract}
 
 \begin{keyword}
