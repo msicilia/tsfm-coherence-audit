@@ -9,9 +9,9 @@ For several real hierarchies and several foundation models we measure:
   * CAA (a small interpretable base + reconciliation) which is coherent by
     construction.
 
-Reconciliation uses Nixtla's hierarchicalforecast. TSFM base forecasts come from
-Chronos-Bolt and TimesFM (GPU) and Moirai (CPU; its GPU path is blocked on this
-Blackwell card by an sm_121/nvrtc incompatibility).
+Reconciliation uses Nixtla's hierarchicalforecast. TSFM base forecasts come from the
+six foundation models wrapped in models.py (all on the GPU) and, as trained global
+baselines, the two models in global_models.py.
 """
 from __future__ import annotations
 
@@ -28,6 +28,7 @@ import pandas as pd
 ERM_LAMBDA = 1.0
 ERM_INSAMPLE_TARGET = 60
 ERM_MAX_ORIGINS = 12
+ERM_ENABLED = True              # set False to skip the (slow, CPU-bound) ERM reconciler
 ERM_STABILITY_FACTOR = 3.0     # ERM flagged unstable if its MASE > factor x the raw MASE
 
 from .hierarchies import ALL_HIERARCHIES as HIERARCHIES
@@ -82,6 +83,8 @@ def _one_window(group_data, tsfms, h, period, w, batch_size, use_caaa):
         batched. Returns a list of median arrays aligned to ``hs``."""
         if hasattr(model, "fit"):
             model.fit(hs, h)
+            preds = model.predict_batch(hs, h)
+        elif getattr(model, "joint", False):     # multivariate model: one group, no split
             preds = model.predict_batch(hs, h)
         else:
             preds = []
@@ -177,12 +180,19 @@ def _one_window(group_data, tsfms, h, period, w, batch_size, use_caaa):
 
     parts = []
     if erm_models:                          # bottom-up + MinT-ols + ERM (needs Y_df)
-        r = _reconcile(erm_models, [BottomUp(), MinTrace(method="ols"),
-                                    ERM(method="reg_bu", lambda_reg=lam)], Ydf)
+        r = (_reconcile(erm_models, [BottomUp(), MinTrace(method="ols"),
+                                     ERM(method="reg_bu", lambda_reg=lam)], Ydf)
+             if ERM_ENABLED else None)
         if r is None:                       # ERM ill-conditioned -> structural only
             r = _reconcile(erm_models, [BottomUp(), MinTrace(method="ols")], Ydf)
         if r is not None:
             parts.append(r)
+        # MinT with the shrinkage covariance estimator (Wickramasuriya et al. 2019),
+        # fitted on the same in-sample residuals ERM uses. Reconciled separately so a
+        # failure here cannot take the other reconcilers down with it.
+        r = _reconcile(erm_models, [MinTrace(method="mint_shrink")], Ydf)
+        if r is not None:
+            parts.append(r[id_cols + [c for c in r.columns if "mint_shrink" in c]])
     if struct_models:                       # structural reconcilers only (no in-sample)
         y_min = Ydf[id_cols + ["y"]] if "y" in Ydf.columns else None
         r = _reconcile(struct_models, [BottomUp(), MinTrace(method="ols")], y_min)
@@ -204,11 +214,13 @@ def _one_window(group_data, tsfms, h, period, w, batch_size, use_caaa):
         variants[(n, "BottomUp")] = f"{n}/BottomUp"
         variants[(n, "MinT-ols")] = f"{n}/MinTrace_method-ols"
         if n in base_in:
+            variants[(n, "MinT-shrink")] = f"{n}/MinTrace_method-mint_shrink"
             variants[(n, "ERM")] = f"{n}/{ERM_COL}"
     if use_caaa:
         variants[("CAA", "reconciled")] = "AutoETS/BottomUp"
         variants[("AutoETS", "raw")] = "AutoETS"
         variants[("AutoETS", "ERM")] = f"AutoETS/{ERM_COL}"
+        variants[("AutoETS", "MinT-shrink")] = "AutoETS/MinTrace_method-mint_shrink"
     err_records = []
     for u in nodes:
         sub = Yrec.loc[u]

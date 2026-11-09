@@ -99,22 +99,26 @@ def _figure(g: pd.DataFrame):
     except Exception as e:
         print(f"  [no figure] matplotlib unavailable: {e}"); return
     os.makedirs(FIGS, exist_ok=True)
-    fig, ax = plt.subplots(figsize=(5.2, 4.0))
+    from tsfm_bench import figstyle
+    figstyle.apply()
+    fig, ax = plt.subplots(figsize=(figstyle.TEXT_WIDTH_IN, 3.4))
     sub = g.dropna(subset=["dependence"])
-    for variant, mk, lab in [("infl_indep", "o", "independent"),
-                             ("infl_schaake", "s", "Schaake/ECC"),
-                             ("infl_gauss", "^", "Gaussian copula")]:
+    # fixed categorical slots (blue, orange, aqua); the marker shape also carries identity
+    for variant, mk, col, lab in [("infl_indep", "o", figstyle.SERIES[0], "independent"),
+                                  ("infl_schaake", "s", figstyle.SERIES[1], "Schaake/ECC"),
+                                  ("infl_gauss", "^", figstyle.SERIES[2], "Gaussian copula")]:
         s = sub[np.isfinite(sub[variant])]
-        ax.scatter(s["dependence"], s[variant], marker=mk, s=42, alpha=0.8, label=lab)
+        ax.scatter(s["dependence"], s[variant], marker=mk, s=28, alpha=0.8,
+                   color=col, edgecolor="white", linewidth=0.5, label=lab)
         if len(s) >= 3:
             lr = stats.linregress(s["dependence"], s[variant])
             xs = np.linspace(s["dependence"].min(), s["dependence"].max(), 50)
-            ax.plot(xs, lr.intercept + lr.slope * xs, lw=1, alpha=0.6)
-    ax.axhline(0, color="k", lw=0.6, ls=":")
+            ax.plot(xs, lr.intercept + lr.slope * xs, lw=1.2, alpha=0.7, color=col)
+    ax.axhline(0, color="#52514e", lw=0.6, ls=":")
     ax.set_xlabel("cross-series dependence (mean |corr| of bottom series)")
     ax.set_ylabel("CRPS cost of coherence (reconciled − raw)")
-    ax.set_title("Independent-summation cost does not track dependence; coupling helps")
-    ax.legend(frameon=False, fontsize=8)
+    ax.grid(True, alpha=0.3)
+    ax.legend(frameon=False, loc="upper left")
     fig.tight_layout()
     fig.savefig(os.path.join(FIGS, "prob_coherence_law.pdf"))
     fig.savefig(os.path.join(FIGS, "prob_coherence_law.png"), dpi=600)

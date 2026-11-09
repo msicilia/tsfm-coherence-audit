@@ -1,6 +1,18 @@
-% References for: Constraint Satisfaction in Time-Series Foundation Models:
-% A Multi-Model Audit of Coherence Failures
+% ============================================================
+%  References for: Constraint Satisfaction in Time-Series
+%  Foundation Models: A Multi-Model Audit of Coherence Failures
+%
+%  VERIFICATION STATUS (2026-07-23). Every entry below was checked
+%  against the actual PDF in ../refrences/ or against DBLP/Crossref.
+%  Venue fields are asserted only where a source confirmed them;
+%  entries with no confirmed peer-reviewed venue stay as preprints.
+%  Do not add or edit bibliographic metadata without fetching the
+%  source -- four fabricated entries were found in the 2026-06 pass.
+% ============================================================
 
+% ---------- Time-series foundation models ----------
+% Verified: PDF header states "Published in Transactions on Machine
+% Learning Research (10/2024)". Was previously mis-filed as a preprint.
 @article{chronos2024,
   title   = {Chronos: Learning the Language of Time Series},
   author  = {Ansari, Abdul Fatir and Stella, Lorenzo and Turkmen, Caner and
@@ -17,6 +29,7 @@
   url     = {https://openreview.net/forum?id=gerNCVqqtR}
 }
 
+% Verified: arXiv abstract page (2510.15821). No peer-reviewed venue found.
 @article{chronos2_2025,
   title   = {Chronos-2: From Univariate to Universal Forecasting},
   author  = {Ansari, Abdul Fatir and Shchur, Oleksandr and K{\"u}ken, Jaris and
@@ -31,6 +44,7 @@
   year    = {2025}
 }
 
+% Verified: DBLP -- ICML 2024, pp. 53140--53164. Full author list from PDF.
 @inproceedings{moirai2024,
   title     = {Unified Training of Universal Time Series Forecasting Transformers},
   author    = {Woo, Gerald and Liu, Chenghao and Kumar, Akshat and
@@ -42,6 +56,7 @@
   note      = {arXiv:2402.02592}
 }
 
+% Verified: DBLP -- ICML 2024, pp. 10148--10167.
 @inproceedings{timesfm2024,
   title     = {A Decoder-Only Foundation Model for Time-Series Forecasting},
   author    = {Das, Abhimanyu and Kong, Weihao and Sen, Rajat and Zhou, Yichen},
@@ -52,6 +67,8 @@
   note      = {arXiv:2310.10688}
 }
 
+% Verified: PDF (v3, Feb 2024) title includes "Probabilistic"; the v1/DBLP
+% title omits it. DBLP lists no peer-reviewed venue. 18 authors, from PDF.
 @article{lagllama2024,
   title   = {Lag-Llama: Towards Foundation Models for Probabilistic Time
              Series Forecasting},
@@ -66,6 +83,7 @@
   year    = {2024}
 }
 
+% Verified: NeurIPS 2024 proceedings PDF. Full author list from that PDF.
 @inproceedings{ttm2024,
   title     = {Tiny Time Mixers (TTMs): Fast Pre-trained Models for Enhanced
                Zero/Few-Shot Forecasting of Multivariate Time Series},
@@ -77,6 +95,8 @@
   note      = {arXiv:2401.03955}
 }
 
+% ---------- Benchmarks ----------
+% Verified: PDF (v4, 30 Jun 2026). No peer-reviewed venue found.
 @article{fevbench2025,
   title   = {fev-bench: A Realistic Benchmark for Time Series Forecasting},
   author  = {Shchur, Oleksandr and Ansari, Abdul Fatir and Turkmen, Caner and
@@ -86,6 +106,8 @@
   year    = {2025}
 }
 
+% Verified: DBLP lists only the CoRR entry (no conference venue).
+% Full 8-author list from DBLP and the PDF.
 @article{gifteval2024,
   title   = {GIFT-Eval: A Benchmark for General Time Series Forecasting Model
              Evaluation},
@@ -96,6 +118,7 @@
   year    = {2024}
 }
 
+% Verified: PDF (arXiv:2105.06643). Full author list from that PDF.
 @inproceedings{monash2021,
   title     = {Monash Time Series Forecasting Archive},
   author    = {Godahewa, Rakshitha and Bergmeir, Christoph and Webb, Geoffrey I. and
@@ -106,6 +129,8 @@
   note      = {arXiv:2105.06643}
 }
 
+% ---------- Simple-baseline critique / benchmarking practice ----------
+% Verified: DBLP -- AAAI 2023, pp. 11121--11128.
 @inproceedings{dlinear2023,
   title     = {Are Transformers Effective for Time Series Forecasting?},
   author    = {Zeng, Ailing and Chen, Muxi and Zhang, Lei and Xu, Qiang},
@@ -116,6 +141,7 @@
   note      = {arXiv:2205.13504}
 }
 
+% Verified: DBLP -- ICML 2024, pp. 48404--48427.
 @inproceedings{toner2024linear,
   title     = {An Analysis of Linear Time Series Forecasting Models},
   author    = {Toner, William and Darlow, Luke Nicholas},
@@ -126,6 +152,11 @@
   note      = {arXiv:2403.14587}
 }
 
+% CORRECTED 2026-07-23. The previous entry was fabricated: it gave the title
+% "What Matters in Deep Learning for Time Series Forecasting?", the author
+% "Luca Moretti", and the venue ICLR 2026. Verified against arXiv:2512.22702:
+% the real title, author order and venue (ICML 2026) are as below.
+% Key renamed from `whatmatters2025` because that slug described the fake title.
 @inproceedings{benchmarking2026,
   title     = {Position: Current Benchmarking Hinders Real Progress in Deep
                Learning for Time Series Forecasting},
@@ -137,6 +168,9 @@
   note      = {arXiv:2512.22702}
 }
 
+% ---------- Cost / operational-viability frontier ----------
+% CORRECTED 2026-07-23. Author first names were fabricated
+% ("Aditya Soni, Abhimanyu Das, Vikas Guduguntla"). Verified against the PDF.
 @article{operationalviability2026,
   title   = {Assessing the Operational Viability of Foundation Models for Time
              Series Forecasting},
@@ -145,6 +179,7 @@
   year    = {2026}
 }
 
+% Verified: PDF (arXiv:2602.10848, Feb 2026). Single-author preprint.
 @article{energyload2026,
   title   = {Time Series Foundation Models for Energy Load Forecasting on
              Consumer Hardware: A Multi-Dimensional Zero-Shot Benchmark},
@@ -153,6 +188,8 @@
   year    = {2026}
 }
 
+% ---------- Short-history / data-scarce evidence ----------
+% Verified: PDF (v3, Apr 2026).
 @article{enrolment2026,
   title   = {Forecasting Commencing Enrolments Under Data Sparsity: A Zero-Shot
              Time Series Foundation Models Framework for Higher Education
@@ -162,6 +199,7 @@
   year    = {2026}
 }
 
+% Verified: PDF (arXiv:2607.04919, Jul 2026), KIT.
 @article{breakeven2026,
   title   = {When Do Foundation Models Pay Off? A Break-Even Analysis of
              Pretrained Time Series Forecasters},
@@ -170,6 +208,7 @@
   year    = {2026}
 }
 
+% Verified: arXiv abstract page (2603.26017, 27 Mar 2026). 10 authors.
 @article{quitobench2026,
   title   = {QuitoBench: A High-Quality Open Time Series Forecasting Benchmark},
   author  = {Xue, Siqiao and Zhu, Zhaoyang and Zhang, Wei and Cai, Rongyao and
@@ -179,14 +218,18 @@
   year    = {2026}
 }
 
+% Verified: PDF (v3, 7 Oct 2025).
 @article{foundational2025,
   title   = {How Foundational are Foundation Models for Time Series Forecasting?},
   author  = {Karaouli, Nouha and Coquenet, Denis and Fromont, Elisa and
              Mermillod, Martial and Reyboz, Marina},
   journal = {arXiv preprint arXiv:2510.00742},
-  year    = {2025}
+  year    = {2025},
+  note    = {NeurIPS 2025 Workshop on Recent Advances in Time Series Foundation Models}
 }
 
+% ---------- Agentic / LLM-driven forecasting ----------
+% Verified: DBLP -- CoRR only, no peer-reviewed venue.
 @article{tsci2025,
   title   = {TimeSeriesScientist: A General-Purpose AI Agent for Time Series
              Analysis},
@@ -196,6 +239,7 @@
   year    = {2025}
 }
 
+% Verified: PDF (v4, Mar 2026). Position paper.
 @article{atsf2026,
   title   = {Position: Beyond Model-Centric Prediction --- Agentic Time Series
              Forecasting},
@@ -205,8 +249,11 @@
   year    = {2026}
 }
 
+% Verified: PDF (arXiv:2605.14389, May 2026), Google / Penn State.
+% Title updated 2026-10-27 to the current arXiv version; v1 (May 2026) omitted
+% "Context-Aware".
 @article{nexus2026,
-  title   = {Nexus: An Agentic Framework for Time Series Forecasting},
+  title   = {Nexus: An Agentic Framework for Context-Aware Time Series Forecasting},
   author  = {Das, Sarkar Snigdha Sarathi and Goyal, Palash and Parmar, Mihir and
              Peng, Nanyun and Tirumalashetty, Vishy and Li, Chun-Liang and
              Zhang, Rui and Yoon, Jinsung and Pfister, Tomas},
@@ -214,6 +261,7 @@
   year    = {2026}
 }
 
+% Verified: DBLP -- IEEE BigData 2025, pp. 2685--2688 (short paper).
 @inproceedings{dcats2025,
   title     = {Empowering Time Series Forecasting with LLM-Agents},
   author    = {Yeh, Chin-Chia Michael and Lai, Vivian and Saini, Uday Singh and
@@ -226,6 +274,15 @@
   note      = {arXiv:2508.04231}
 }
 
+% REMOVED 2026-07-23: `llmselect2025` ("Efficient Model Selection for Time
+% Series Forecasting via LLMs", Wei Wei et al., arXiv:2504.02119). It was an
+% unverified placeholder entry and was cited nowhere in main.tex.
+
+% ---------- Constraint-aware / physics-informed forecasting ----------
+% CORRECTED 2026-07-23. The previous title, "A Unified Framework for
+% Linear-Constrained Forecasting", was fabricated -- it paraphrased this
+% paper's own abstract. Verified against arXiv:2502.10485 (14 Feb 2025);
+% Crossref shows no journal version. Full author list added.
 @article{doumeche2025,
   title   = {Forecasting Time Series with Constraints},
   author  = {Doum{\`e}che, Nathan and Bach, Francis and Bedek, {\'E}loi and
@@ -234,24 +291,32 @@
   year    = {2025}
 }
 
+% Verified: PDF (v2, 4 Nov 2025).
 @article{probharde2e2025,
   title   = {End-to-End Probabilistic Framework for Learning with Hard
              Constraints},
-  author  = {Utkarsh, Utkarsh and Maddix, Danielle C. and Ma, Ruijun and
+  author  = {{Utkarsh} and Maddix, Danielle C. and Ma, Ruijun and
              Mahoney, Michael W. and Wang, Yuyang},
   journal = {arXiv preprint arXiv:2506.07003},
   year    = {2025}
 }
 
+% CORRECTED 2026-07-23. Both the title ("AutoPINN: Automated Design of
+% Physics-Informed Neural Networks") and the arXiv ID (2212.04058) were
+% fabricated. Verified against the PDF and DBLP: the paper is Auto-PINN,
+% arXiv:2205.13748. The v2 PDF footer reads "NeurIPS 2023 AI for Science Workshop".
 @article{autopinn2022,
   title   = {Auto-PINN: Understanding and Optimizing Physics-Informed Neural
              Architecture},
   author  = {Wang, Yicheng and Han, Xiaotian and Chang, Chia-Yuan and
              Zha, Daochen and Braga-Neto, Ulisses and Hu, Xia},
   journal = {arXiv preprint arXiv:2205.13748},
-  year    = {2022}
+  year    = {2022},
+  note    = {NeurIPS 2023 AI for Science Workshop}
 }
 
+% ---------- Hierarchical / coherent forecasting ----------
+% Verified: publisher PDF -- JASA 114(526), 804--819.
 @article{mint2019,
   title   = {Optimal Forecast Reconciliation for Hierarchical and Grouped Time
              Series Through Trace Minimization},
@@ -265,6 +330,7 @@
   doi     = {10.1080/01621459.2018.1448825}
 }
 
+% Verified: DBLP -- KDD 2019, pp. 1337--1347, DOI 10.1145/3292500.3330976.
 @inproceedings{bentaieb2019erm,
   title     = {Regularized Regression for Hierarchical Forecasting Without
                Unbiasedness Conditions},
@@ -277,6 +343,7 @@
   doi       = {10.1145/3292500.3330976}
 }
 
+% Verified: Crossref -- IJF 40(2), 430--456. Volume/issue/pages/DOI added.
 @article{hfreview2024,
   title   = {Forecast Reconciliation: A Review},
   author  = {Athanasopoulos, George and Hyndman, Rob J. and Kourentzes, Nikolaos and
@@ -289,6 +356,9 @@
   doi     = {10.1016/j.ijforecast.2023.10.010}
 }
 
+% Verified: Crossref -- EJOR 306(2), 693--706. Added 2026-07-23: the standard
+% reference for probabilistic reconciliation and its scoring rules, which
+% Section 6 relies on and previously did not cite.
 @article{probrecon2023,
   title   = {Probabilistic Forecast Reconciliation: Properties, Evaluation and
              Score Optimisation},
@@ -302,6 +372,7 @@
   doi     = {10.1016/j.ejor.2022.07.040}
 }
 
+% ---------- Classical baselines ----------
 @book{hyndman2021fpp,
   title     = {Forecasting: Principles and Practice},
   author    = {Hyndman, Rob J. and Athanasopoulos, George},
@@ -320,12 +391,18 @@
   year    = {2020}
 }
 
+% ---------- Data references (cite with [dataset] tag at submission) ----------
+% NOTE ON STYLE: apalike ignores `url`, `doi` and `publisher` for misc entries, so the
+% locator is repeated in `note` (which apalike does print) to satisfy ESWA's
+% Option C requirement that datasets be cited AND linked. `doi` is kept even
+% though the style drops it, so the entry stays machine-verifiable.
+% Titles are braced word-by-word because apalike lower-cases unbraced titles.
 @misc{data_m3,
   title     = {{[dataset]} {M3} {Competition} {Data}},
   author    = {Makridakis, Spyros and Hibon, Michele},
   year      = {2000},
   publisher = {International Institute of Forecasters},
-  note      = {Monash Time Series Forecasting Archive.
+  note      = {International Institute of Forecasters.
                \url{https://forecasters.org/resources/time-series-data/m3-competition/}}
 }
 
@@ -348,11 +425,13 @@
 }
 
 @misc{data_tourism,
-  title     = {{[dataset]} {Australian} {Tourism} {Demand} (hierarchical)},
+  title     = {{[dataset]} {National} {Visitor} {Survey}: {Australian} {Domestic} {Tourism}},
   author    = {{Tourism Research Australia}},
   year      = {2019},
-  publisher = {Monash Time Series Forecasting Archive},
-  note      = {Monash Time Series Forecasting Archive. \url{https://forecasters.org/}}
+  publisher = {Tourism Research Australia},
+  note      = {Tourism Research Australia. \url{https://www.tra.gov.au/}. The hierarchical
+               versions used here (TourismSmall, TourismLarge) are those of Hyndman et al.\ (2011)
+               and Wickramasuriya et al.\ (2019), as distributed in \texttt{datasetsforecast}}
 }
 
 @misc{data_electricity,
@@ -362,7 +441,6 @@
   publisher = {UCI Machine Learning Repository},
   doi       = {10.24432/C58C86},
   note      = {UCI Machine Learning Repository. \url{https://doi.org/10.24432/C58C86}}
-}
 }
 
 @inproceedings{salinas2019gpcopula,
@@ -391,4 +469,42 @@
   pages   = {1--6},
   year    = {2020},
   url     = {http://jmlr.org/papers/v21/19-820.html}
+}
+
+% ---------- Added 2026-10-27 (full-text citation check) ----------
+% Verified: Crossref content negotiation, DOI 10.1175/1525-7541(2004)005<0243:TSSAMF>2.0.CO;2
+@article{schaake2004,
+  title   = {The {S}chaake {S}huffle: A Method for Reconstructing Space--Time Variability in
+             Forecasted Precipitation and Temperature Fields},
+  author  = {Clark, Martyn and Gangopadhyay, Subhrendu and Hay, Lauren and
+             Rajagopalan, Balaji and Wilby, Robert},
+  journal = {Journal of Hydrometeorology},
+  volume  = {5},
+  number  = {1},
+  pages   = {243--262},
+  year    = {2004},
+  doi     = {10.1175/1525-7541(2004)005<0243:TSSAMF>2.0.CO;2}
+}
+
+% Verified: Crossref content negotiation, DOI 10.1016/j.csda.2011.03.006. Source of the
+% TourismSmall hierarchy (89 series, 56 bottom, quarterly, purpose x state x city/non-city).
+@article{hyndman2011,
+  title   = {Optimal Combination Forecasts for Hierarchical Time Series},
+  author  = {Hyndman, Rob J. and Ahmed, Roman A. and Athanasopoulos, George and Shang, Han Lin},
+  journal = {Computational Statistics \& Data Analysis},
+  volume  = {55},
+  number  = {9},
+  pages   = {2579--2589},
+  year    = {2011},
+  doi     = {10.1016/j.csda.2011.03.006}
+}
+
+% Software: the package through which the five benchmark hierarchies are accessed.
+% Version is the one pinned in uv.lock; year is that version's PyPI release date.
+@misc{datasetsforecast,
+  title     = {{datasetsforecast}: {Datasets} for {Time} {Series} {Forecasting}},
+  author    = {{Nixtla}},
+  year      = {2026},
+  publisher = {GitHub},
+  note      = {Version 1.0.1. \url{https://github.com/Nixtla/datasetsforecast}}
 }

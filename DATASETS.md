@@ -35,7 +35,7 @@ We use two different shapes of data, because we test two different kinds of cons
 
 ## 2. The eight hierarchies
 
-These are the core of the paper. Five come from the standard Monash collection
+These are the core of the paper. Five are the benchmark hierarchies packaged by Nixtla
 (via the `datasetsforecast` package); the other three we build ourselves — a retail
 hierarchy from M5, and two high-dependence energy hierarchies (Solar, Electricity) added
 to populate the upper end of the cross-series dependence axis (§5.6).
@@ -126,7 +126,7 @@ operation. The same object also handles "grouped" structures that are not strict
 
 ## 3. How we built the M5 hierarchy
 
-The five Monash hierarchies barely vary in *cross-series dependence* (how much the
+The five packaged hierarchies barely vary in *cross-series dependence* (how much the
 bottom series move together), and that turned out to matter for our main result. So we
 built a sixth from M5 retail to fill the gap.
 

@@ -37,7 +37,7 @@ packages = ["src/tsfm_bench"]
 # ---------------------------------------------------------------------------
 # torch is built against CUDA 13.0 (not the PyPI CPU/agnostic wheel): the
 # GB10 (sm_121) needs nvrtc >= 13 to JIT-compile Moirai's kernels; the cu128
-# build ships nvrtc 12.8 and fails. This single cu130 env runs every model in the study.
+# build ships nvrtc 12.8 and fails. This single cu130 env runs all five models.
 # ---------------------------------------------------------------------------
 [[tool.uv.index]]
 name = "pytorch-cu130"

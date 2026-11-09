@@ -14,8 +14,9 @@ from __future__ import annotations
 from .paths import DATA
 
 
-# Monash hierarchies shipped by datasetsforecast, in ascending scoped dependence.
-_MONASH = ["Wiki2", "TourismLarge", "Labour", "TourismSmall", "Traffic"]
+# Benchmark hierarchies shipped by datasetsforecast (Nixtla's hierarchical collection),
+# in ascending scoped dependence.
+_PACKAGED = ["Wiki2", "TourismLarge", "Labour", "TourismSmall", "Traffic"]
 
 # name -> approximate bottom-series dependence (from scoping); for ordering/reporting only.
 SCOPED_DEPENDENCE = {
@@ -25,7 +26,7 @@ SCOPED_DEPENDENCE = {
 
 # Every hierarchy, dependence-ascending. The two energy hierarchies occupy the high
 # end of the dependence axis; Electricity is also the venue for the global baselines.
-ALL_HIERARCHIES = _MONASH + ["M5", "Electricity", "Solar"]
+ALL_HIERARCHIES = _PACKAGED + ["M5", "Electricity", "Solar"]
 
 
 def load(name: str, data_dir: str | None = None):

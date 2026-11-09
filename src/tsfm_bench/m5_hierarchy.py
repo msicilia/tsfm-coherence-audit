@@ -1,6 +1,6 @@
 """Build a hierarchical dataset from M5 retail (a sixth hierarchy).
 
-The five Monash hierarchies span little of the cross-series dependence axis that
+The five packaged benchmark hierarchies span little of the cross-series dependence axis that
 the probabilistic-coherence law is estimated on (only Traffic is strongly
 coupled). M5 retail gives an independent, strongly-coupled hierarchy: stores in a
 state share demand shocks (holidays, SNAP days, seasons).

@@ -9,6 +9,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.cache/                       # converted fonts for the figures (figstyle.py)
 tectonic                      # 25 MB vendored binary; reviewers can install their own
 
 # --- raw data (2.5 GB, all re-downloadable by the code) --------------------

@@ -5,13 +5,17 @@ works regardless of the current working directory.
 """
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 # src/tsfm_bench/paths.py -> repo root is two levels up from the package dir
 ROOT = Path(__file__).resolve().parents[2]
 
 DATA = ROOT / "data"
-RESULTS = ROOT / "results"
+# TSFM_RESULTS redirects every result file, so a smoke run cannot overwrite the
+# committed results the paper is built from.
+RESULTS = Path(os.environ["TSFM_RESULTS"]).resolve() if os.environ.get("TSFM_RESULTS") \
+    else ROOT / "results"
 PAPER = ROOT / "paper"
 FIGURES = PAPER / "figures"
 

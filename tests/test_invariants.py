@@ -1,7 +1,7 @@
-"""Invariants the experiment engines rely on.
+"""Invariants that silently broke during development.
 
-Each test pins a property that is easy to break silently: rolling-origin window
-caps, the summing-matrix identity, and forecast-wrapper output shapes.
+Each test here corresponds to a bug that actually occurred and cost real debugging
+time, not a hypothetical.
 """
 from __future__ import annotations
 
@@ -57,7 +57,7 @@ def _n_eff(requested: int, min_len: int, h: int) -> int:
 
 
 def test_window_cap_short_series_does_not_empty_the_study():
-    """Requesting 8 origins on TourismSmall (len 36, h 4) must not filter out
+    """Requesting 8 origins on TourismSmall (len 36, h 4) previously filtered out
     every series and surfaced as an opaque KeyError: 'model'."""
     n = _n_eff(8, min_len=36, h=4)
     assert 1 <= n <= 8

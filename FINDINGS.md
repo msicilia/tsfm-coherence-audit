@@ -72,7 +72,7 @@ Three things make this hard to explain away:
   factor of 250 — with no trend. The smallest (TinyTimeMixer) is incoherent at much the
   same rates as models 250× larger.
 - **Training jointly doesn't help.** The two global models, which see all series at
-  once, are incoherent too (LightGBM 50–100%, TCN 16–100%). So this isn't a per-series
+  once, are incoherent too (LightGBM 50–100%, TCN 21–100%). So this isn't a per-series
   quirk — it's a property of *any* model that doesn't force its outputs to add up.
 
 The small classical model failed the same way, which is the point: this is a property

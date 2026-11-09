@@ -148,6 +148,33 @@ class Chronos2:
         return self.predict_batch([history], h)[0]
 
 
+class Chronos2Joint(Chronos2):
+    """Chronos-2 in its multivariate mode: every history passed to one call is treated
+    as a variate of a single task, so group attention shares information across all of
+    them (Ansari et al. 2025, Sec. 3). Used to test whether forecasting a whole
+    hierarchy jointly yields coherent outputs. ``joint`` tells callers not to split the
+    histories into batches."""
+    name = "Chronos-2 (joint)"
+    joint = True
+
+    def predict_quantiles_batch(self, histories, h, levels):
+        torch = self.torch
+        n = len(histories)
+        T = max(len(y) for y in histories)
+        target = np.full((n, T), np.nan, dtype=np.float32)   # left-pad shorter variates
+        for i, y in enumerate(histories):
+            y = np.asarray(y, dtype=np.float32)
+            target[i, T - len(y):] = y
+        qs, _means = self.pipe.predict_quantiles(
+            [torch.tensor(target)], prediction_length=h, quantile_levels=list(levels),
+            batch_size=max(256, n))
+        out = np.asarray(qs[0].float().cpu().numpy(), dtype=float)   # (n, h, L)
+        if out.shape != (n, h, len(levels)):
+            raise ValueError(f"{self.name}: unexpected quantile shape {out.shape}, "
+                             f"wanted {(n, h, len(levels))}")
+        return _check_quantiles(out, n, h, levels, self.name)
+
+
 # --------------------------------------------------------------------------- #
 # TimesFM 2.5 (Google): array API, batched
 # --------------------------------------------------------------------------- #

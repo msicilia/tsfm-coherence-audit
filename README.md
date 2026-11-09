@@ -66,9 +66,10 @@ uv run python experiments/run_all.py --quick
 # 2. the full campaign (GPU; ~12 h on a single accelerator)
 uv run python experiments/run_all.py
 
-# 3. the two analyses run_all does not cover
+# 3. the three analyses run_all does not cover
 uv run python experiments/run_accuracy_stats.py   # Wilcoxon + Benjamini-Hochberg
 uv run python experiments/run_prob_law.py         # dependence regression + its figure
+uv run python experiments/run_timing.py           # wall-clock cost of each step (GPU)
 
 # 4. rebuild the paper's tables and figures from the CSVs just produced
 uv run python experiments/make_tables.py          # -> paper/tables/*.tex
@@ -78,8 +79,8 @@ uv run python experiments/make_figures.py         # -> paper/figures/*
 uv run pytest
 ```
 
-Individual studies: `--studies coherence prob temporal nonneg frontier dm ablation
-postproc`. Step 5 is the only one that needs neither GPU nor data; steps 3 and 4
+Individual studies: `--studies coherence joint prob temporal nonneg frontier dm
+ablation postproc` (`joint` is Chronos-2 in multivariate mode). Step 5 is the only one that needs neither GPU nor data; steps 3 and 4
 require step 2 to have completed, since `results/` starts empty.
 
 Every driver stamps the environment that produced its output into
@@ -103,6 +104,7 @@ src/tsfm_bench/        the library
   paths.py             canonical absolute paths (keeps every driver cwd-independent)
   provenance.py        stamp environment + versions into results/_provenance/
   tables.py            auto-generate the paper's LaTeX tables from result CSVs
+  figstyle.py          shared matplotlib style for the figures (text-block width, fonts)
 
 experiments/           run_all.py (orchestrator) + the analyses and builders
 tests/                 unit tests (window cap, summing-matrix identity, wrapper shapes)
@@ -114,7 +116,7 @@ paper/                 LaTeX source, generated tables and figures
 ## Building the paper
 
 ```bash
-cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main
+cd paper && latexmk -pdf main
 ```
 
 `main.tex` is set to `review` (double-spaced, line-numbered) for submission. Switch the

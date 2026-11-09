@@ -15,6 +15,8 @@ Studies (default: all):
     nonneg     non-negativity violations on M3 (far from 0) and M5 (near 0).
     frontier   accuracy vs per-series history on M4/M5.
     dm         per-series Diebold-Mariano (small vs FM) from per-step errors.
+    joint      Chronos-2 in multivariate mode (all nodes of a hierarchy as one task):
+               incoherence and accuracy over all 8 hierarchies.
     ablation   CAA projection-vs-selection ablation.
     postproc   derive prob-law regression from the prob CSV.
 
@@ -39,7 +41,12 @@ from tsfm_bench.provenance import record
 RESULTS.mkdir(parents=True, exist_ok=True)
 
 
+FAILURES: list[str] = []      # every skipped unit; a definitive run must end with none
+
+
 def log(msg: str):
+    if "[skip]" in msg or "FAILED" in msg:
+        FAILURES.append(msg.strip())
     print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
 
 
@@ -148,6 +155,37 @@ def study_temporal(fms, ttm, cap, n_windows):
                      n=("pct_nodes_incoherent", "size")).reset_index())
         summ.to_csv(out("temporal_coherence_summary.csv"), index=False)
         log("wrote temporal_coherence_*.csv")
+
+
+def study_joint(fms, groups, n_windows):
+    """Chronos-2 forecasting every node of a hierarchy jointly (one multivariate task).
+    ERM is skipped: it is not needed here and dominates the runtime on TourismLarge."""
+    import tsfm_bench.coherence as coh
+    from tsfm_bench.models import Chronos2Joint
+    c2 = fms["Chronos-2"]
+    joint = Chronos2Joint.__new__(Chronos2Joint)        # share the loaded pipeline
+    joint.torch, joint.device, joint.pipe = c2.torch, c2.device, c2.pipe
+    inc_parts, acc_parts = [], []
+    erm_was, coh.ERM_ENABLED = coh.ERM_ENABLED, False
+    try:
+        for g in groups:
+            log(f"joint: {g} ...")
+            try:
+                r = coh.run_coherence(g, {"Chronos-2 (joint)": joint}, n_windows=n_windows,
+                                      use_caaa=False)
+            except Exception as e:
+                log(f"  [skip] joint/{g}: {type(e).__name__}: {e}")
+                continue
+            inc_parts.append(r["incoherence"])
+            acc_parts.append(r["accuracy"])
+    finally:
+        coh.ERM_ENABLED = erm_was
+    if inc_parts:
+        pd.concat(inc_parts, ignore_index=True).to_csv(
+            out("coherence_incoherence_joint.csv"), index=False)
+        pd.concat(acc_parts, ignore_index=True).to_csv(
+            out("coherence_accuracy_joint.csv"), index=False)
+        log("wrote coherence_{incoherence,accuracy}_joint.csv")
 
 
 def study_nonneg(fms, m3_cap, m5_cap):
@@ -285,8 +323,9 @@ def study_postproc():
 # --------------------------------------------------------------------------- #
 # Orchestration
 # --------------------------------------------------------------------------- #
-ALL_STUDIES = ["coherence", "prob", "temporal", "nonneg", "frontier", "dm", "ablation", "postproc"]
-NEEDS_FMS = {"coherence", "prob", "temporal", "nonneg", "frontier", "dm"}
+ALL_STUDIES = ["coherence", "joint", "prob", "temporal", "nonneg", "frontier", "dm", "ablation",
+               "postproc"]
+NEEDS_FMS = {"coherence", "joint", "prob", "temporal", "nonneg", "frontier", "dm"}
 NEEDS_TTM = {"coherence", "temporal"}
 
 
@@ -318,6 +357,8 @@ def main():
         try:
             if s == "coherence":
                 study_coherence(fms, ttm, groups, nw)
+            elif s == "joint":
+                study_joint(fms, groups, nw)
             elif s == "prob":
                 study_prob(fms, groups, nw)
             elif s == "temporal":
@@ -336,8 +377,16 @@ def main():
             log(f"STUDY {s} FAILED: {type(e).__name__}: {e}")
         log(f"----- {s} done in {time.time() - t:.0f}s -----")
 
-    record("run_all", studies=studies, quick=args.quick, n_windows=nw)
-    log(f"run complete in {(time.time() - t0) / 60:.1f} min")
+    record("run_all", studies=studies, quick=args.quick, n_windows=nw,
+           failures=list(FAILURES))
+    print(f"[{time.strftime('%H:%M:%S')}] run complete in {(time.time() - t0) / 60:.1f} min",
+          flush=True)
+    if FAILURES:
+        print(f"\n{len(FAILURES)} unit(s) skipped or failed; results are INCOMPLETE:", flush=True)
+        for f in FAILURES:
+            print("  " + f, flush=True)
+        raise SystemExit(1)
+    print("no units skipped or failed", flush=True)
 
 
 if __name__ == "__main__":
