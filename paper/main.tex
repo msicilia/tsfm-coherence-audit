@@ -141,7 +141,7 @@ series. The rates are independent of accuracy and of model size. Point reconcili
 removes the violation exactly, and in the temporal case bottom-up aggregation also
 improves accuracy.
 
-Second, we show that probabilistic coherence is harder. Summing independent marginals is
+Second, we show that probabilistic coherence is more demanding. Summing independent marginals is
 inexpensive on most hierarchies and does not scale with cross-series dependence,
 contrary to what a smaller sample had suggested. Copula coupling lowers the cost further, most where
 dependence is strongest, because per-series models supply no joint distribution.
@@ -154,9 +154,10 @@ that the feasibility comes from the projection step; conditioning the model sele
 on the constraints does not change it.
 
 Fourth, we provide a multi-model audit covering six foundation models, two trained global
-baselines, eight hierarchies and a per-series history-length frontier. The coherence
-failure holds for every model and hierarchy we evaluate, whether the base is zero-shot or
-globally trained, while accuracy and non-negativity are model-dependent.
+baselines, eight hierarchies and a per-series history-length frontier. On six of the
+eight hierarchies the coherence failure holds for every model we evaluate, whether the
+base is zero-shot or globally trained, while accuracy and non-negativity are
+model-dependent.
 
 CAA is an intelligent forecasting system in the sense relevant to this journal. It reads a
 declared constraint specification, selects a model from a small interpretable library
@@ -251,7 +252,8 @@ Section~\ref{sec:probcoh}.
 None of these lines covers the setting of this paper. Reconciliation has been studied
 on base forecasters that the analyst fits, and constrained training assumes a model that
 the analyst trains; benchmarks and agentic systems do not raise the question. A frozen
-zero-shot base, chosen from several whose coherence behaviour has never been measured,
+zero-shot base, chosen from several whose coherence behaviour has not, to our knowledge,
+been measured,
 falls outside all three. This paper audits that setting, and constraint-aware
 assembly is built for it (Table~\ref{tab:gap}).
 
@@ -450,7 +452,8 @@ forecasting. We measure the share of aggregate nodes whose forecasts do not equa
 sum of their children (relative gap above $1\%$). Table~\ref{tab:coherence} shows that on
 six of the eight hierarchies the great majority of aggregate nodes are incoherent, at
 $68.8$--$100\%$ for every foundation model on those six, TinyTimeMixer aside. This
-includes Chronos-2, the newest model and, on several hierarchies, the most accurate.
+includes Chronos-2, the most recently released of the models tested and, on several
+hierarchies, the most accurate.
 The two exceptions, Labour and Electricity, are the hierarchies whose
 aggregates consist mostly of a common smooth component, which the independent forecasts
 reproduce almost exactly. In neither case does a model enforce the constraint.
@@ -465,7 +468,7 @@ the tolerance, and a looser tolerance would lower the count. On Labour ($0.6\%$)
 Electricity ($0.8\%$) the typical gap falls below the tolerance altogether. This
 measures directly the common smooth component that the counts had only suggested.
 
-The roster deliberately spans two orders of magnitude of capacity, from the
+The set of models deliberately spans two orders of magnitude of capacity, from the
 $0.8$M-parameter TinyTimeMixer checkpoint to the roughly $200$M-parameter TimesFM and
 Chronos-Bolt-Base, and incoherence does
 not vary with that scale. On the six affected hierarchies the foundation models are
@@ -557,7 +560,7 @@ avoided, but agrees with their own observation that bottom-up performs especiall
 for small samples, where the covariance is hard to estimate; a frozen zero-shot base
 places the analyst in that regime.
 
-Reconciliation is also cheap in time, except for ERM. Table~\ref{tab:inftiming} reports
+Reconciliation also adds little time, except for ERM. Table~\ref{tab:inftiming} reports
 the inference time of each model on one origin of every hierarchy, and
 Table~\ref{tab:timing} the time of each later step for Chronos-2. A zero-shot point
 forecast of a whole hierarchy takes under three seconds for TinyTimeMixer and the three
@@ -570,8 +573,8 @@ Wiki2, Traffic and Solar, in addition to the in-sample forecast passes it needs,
 cost between $0.2$ and $7$ seconds. On the probabilistic side, the quantile forecast with
 $200$ samples per node costs the same as the point forecast, because Chronos-2 emits its
 quantiles in the same pass, and independent summation, the Schaake shuffle and the
-Gaussian copula each take well under half a second. The coherence step is therefore
-cheap in time as well as in accuracy unless a learned reconciler is chosen.
+Gaussian copula each take well under half a second. The coherence step therefore costs
+little time as well as little accuracy unless a learned reconciler is chosen.
 
 \input{tables/recon}
 
@@ -603,9 +606,9 @@ factor. The further apart the two views of the same series, the more the model d
 with itself; for Chronos-2 the share rises from $37\%$ at the bi-monthly level to
 $65\%$ at the annual one.
 
-The accuracy consequence is stronger than in the cross-sectional case. In the
-cross-sectional case reconciliation was nearly costless; in the temporal case bottom-up
-aggregation improves accuracy. Aggregating
+The accuracy consequence is stronger than in the cross-sectional case. There
+reconciliation cost little accuracy; in the temporal case bottom-up aggregation improves
+it. Aggregating
 the monthly forecasts is more accurate than forecasting the aggregate directly in all $30$
 model\,$\times$\,level combinations. The size of that gain varies with model and level
 and does not grow steadily with the aggregation factor. It is largest at the annual
@@ -649,14 +652,14 @@ inexpensive on most hierarchies. The inflation stays below $+0.08$ on six of the
 eight, including the most strongly dependent, Electricity (dependence $0.63$,
 inflation $\approx 0$). It is appreciable on only two, Solar ($0.70$, $+0.12$) and
 the moderately dependent Traffic ($0.44$, $+0.33$; TimesFM $1.05 \to 1.56$), and the
-more dependent of the two is the cheaper. The earlier impression of a rising cost had
-two causes. The sample then had six hierarchies, in which Traffic
+more dependent of the two has the lower cost. A preliminary analysis had suggested a
+rising cost, for two reasons. The sample then had six hierarchies, in which Traffic
 was the only high-dependence point, and the fit was pooled, which counts each hierarchy
 once per model. On those six the pooled slope was $+0.45$ at $p=0.015$, but the same six
 fitted at hierarchy level give $p=0.27$. The apparent law was already not significant
 once the replication was counted correctly, and adding the two high-dependence
-hierarchies removes it altogether. Whatever makes independent summation expensive on
-Traffic, it is not cross-series dependence as such.
+hierarchies removes it altogether. Whatever makes independent summation costly on
+Traffic, it is not cross-series dependence.
 
 The coupling, however, does reduce the cost. Imposing the historical dependence
 before summing, by a Schaake shuffle on historical observations or by a fitted
@@ -763,9 +766,8 @@ undetectable at the level at which forecasts are deployed. A study
 evaluating one foundation model on one regime could therefore conclude either that
 small models remain competitive or that they are obsolete, and both conclusions would
 be defensible on their own evidence. The coherence results are not sensitive in this way. They hold
-for every model and every hierarchy, in the cross-sectional and in
-the temporal direction, whereas the accuracy comparison does not hold across
-models.
+for every model, in the cross-sectional and in the temporal direction, whereas the
+accuracy comparison does not hold across models.
 
 The trained global baselines support this reading. On the two
 energy hierarchies, where a model fit jointly across strongly correlated series might be
@@ -841,8 +843,8 @@ reconciliation or projection step, applied to whichever base is most accurate,
 whether a reconciled foundation model or a small interpretable one. CAA supplies that
 step by construction.
 
-The probabilistic case is harder. For point forecasts the reconciliation step is nearly
-costless in accuracy and takes a fraction of a second (Table~\ref{tab:timing}), and
+The probabilistic case is more demanding. For point forecasts the reconciliation step
+costs little accuracy and takes a fraction of a second (Table~\ref{tab:timing}), and
 even for the predictive distributions these models also emit, summing independent
 marginals is usually inexpensive. Summing independent marginals, however, discards the
 cross-series dependence, which a per-series model never supplies. A copula must
@@ -867,7 +869,7 @@ enlarged the sample with two high-dependence hierarchies (Electricity, Solar) to
 whether the independent-summation cost scales with cross-series dependence. It does not,
 so we report the coupling benefit, which does hold. Traffic is
 the one costly case, and a tighter characterisation of when independent summation is
-expensive remains open.
+costly remains open.
 The accuracy-heterogeneity comparison uses paired
 Wilcoxon signed-rank tests with Benjamini--Hochberg false-discovery control,
 complemented by per-series Diebold--Mariano tests on per-horizon losses. We compute the

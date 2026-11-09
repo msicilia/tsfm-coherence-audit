@@ -1,7 +1,7 @@
 Highlights (Expert Systems with Applications)
 Each bullet <= 85 characters including spaces.
 
-- Foundation models cannot satisfy linear coupling constraints on their outputs.
+- Nothing constrains foundation-model outputs to satisfy linear coupling relations.
 - Aggregate nodes incoherent on 6 of 8 hierarchies, for every model size and type.
 - With no second series, models contradict themselves on 37-81% of aggregates.
 - Copula coupling cuts the CRPS cost of coherence most where series are dependent.
