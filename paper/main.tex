@@ -59,7 +59,7 @@ classical model and two jointly trained models. We measure coherence across the 
 of a hierarchy and across time scales of one series, with non-negativity as a
 control. We compare reconciliation methods for point and probabilistic forecasts
 and accuracy across history lengths. On six of the eight hierarchies most aggregate
-nodes are incoherent for every foundation model, whatever its accuracy or size. The
+nodes are incoherent for every foundation model but the least accurate, whatever its size. The
 baselines fail at comparable rates, and so does one series forecast at monthly and
 annual scale. Bottom-up reconciliation restores point coherence at a small loss of
 accuracy, more reliably than ordinary-least-squares trace minimisation or a learned
@@ -67,8 +67,8 @@ reconciler. It does not restore the predictive distributions, because these need
 dependence between series, which the models lack. One model satisfies non-negativity
 exactly, so the failure is confined to coupling constraints. Accuracy does not single
 out a base model, since it varies more among foundation models than between them and the
-classical model. A forecasting system should therefore project the base forecast it uses
-onto the constraints. Constraint-aware assembly does this for a small interpretable
+classical model. A forecasting system should therefore project its base forecast onto
+the constraints. Constraint-aware assembly does this for a small interpretable
 base; in an ablation, the projection step alone makes the forecasts feasible.
 \end{abstract}
 
@@ -433,7 +433,9 @@ predictive band fall below zero.
 
 \paragraph{Accuracy versus history (Section~\ref{sec:frontier})} On M4 monthly and
 quarterly~\citep{data_m4} and M5 daily we hold the test window fixed and truncate the
-available history to $T \in \{12,24,48,96,192,384\}$; only the input history changes.
+available history $T$ on a grid matched to each frequency, $\{12,24,48,96,192,384\}$
+months, $\{8,16,32,64,128\}$ quarters and $\{28,56,112,224\}$ days; only the input
+history changes.
 We report mean MASE against $T$ with eight rolling origins, $95\%$ bootstrap
 confidence intervals, and win-rates against each foundation model.
 
@@ -489,7 +491,7 @@ Chronos-2 allows the joint-modelling objection to be tested on a foundation mode
 directly, because it can forecast all nodes of a hierarchy as the variates of one task
 and share information across them. Run this way it remains incoherent, on $3$--$100\%$
 of aggregate nodes across the eight hierarchies. On five of the six affected hierarchies
-the majority of aggregates still fail (TourismSmall $69\%$, TourismLarge $90\%$, Traffic
+the majority of aggregates still fail (TourismSmall $69\%$, TourismLarge $89\%$, Traffic
 $95\%$, Wiki2 $99\%$, Solar $100\%$), and on M5 retail the share falls from $74\%$ to
 $31\%$. Joint forecasting does narrow the gaps. The typical relative gap falls on seven
 of the eight hierarchies (Traffic $3.9\% \to 1.8\%$), and accuracy improves on two
@@ -670,9 +672,9 @@ decreases with dependence (Schaake slope $-0.18$, $R^2=0.75$, $p=0.005$; Gaussia
 $-0.17$, $R^2=0.81$, $p=0.002$), at the hierarchy level in both cases. The effect does
 not depend on the two added hierarchies; fitted on the original six alone, the Schaake
 slope is $-0.23$ at $p=0.006$. On the strongly
-dependent Solar hierarchy both couplings improve on independent summation and on
-the raw, incoherent distribution (Chronos-2 $1.42 \to 1.17$ Schaake, against a raw
-$1.36$). On Traffic the coupling recovers most of the independent-summation loss
+dependent Solar hierarchy both couplings improve on independent summation for every
+model, and on average they also improve on the raw, incoherent distribution (Chronos-2
+$1.42 \to 1.17$ Schaake, against a raw $1.36$). On Traffic the coupling recovers most of the independent-summation loss
 (TimesFM $1.56 \to 1.20$). The two couplings agree closely throughout. A foundation
 model run per series supplies only marginals, never a joint distribution. Its distributional
 forecast therefore omits the cross-series structure that a copula restores, and the
@@ -743,7 +745,7 @@ without naming the foundation model.
 
 The data regime matters as much as the model. On intermittent M5 series the picture
 is different. All five foundation models outperform AutoETS at every history
-length ($0.84$--$0.89$ against $1.03$--$1.08$) and cluster tightly, so there the
+length ($0.83$--$0.89$ against $1.03$--$1.08$) and cluster tightly, so there the
 advantage is consistent and insensitive to model choice. We test every paired
 comparison with a Wilcoxon signed-rank test and control the false discovery rate with
 the Benjamini--Hochberg procedure. The $150$ comparisons set two small baselines
@@ -857,9 +859,10 @@ recoverable from the model's own marginals.
 six foundation models plus two trained global baselines, and point-reconciliation
 accuracy over up to eight rolling origins with bootstrap confidence intervals. Point
 reconciliation uses bottom-up. We found MinTrace-OLS unstable on Wiki2 and rarely better
-than bottom-up elsewhere (in $6$ of $64$ model\,$\times$\,hierarchy combinations, each
-by a negligible margin), its shrinkage variant stable everywhere but better than
-bottom-up in only $21$ of $48$ combinations, and the learned ERM
+than bottom-up elsewhere (in $6$ of the $64$ combinations of eight base models, the six
+foundation models and the two global ones, with eight hierarchies, each by a negligible
+margin), its shrinkage variant, run on the six foundation models, stable everywhere but
+better than bottom-up in only $21$ of $48$ combinations, and the learned ERM
 reconciler~\citep{bentaieb2019erm} stable on only one of eight hierarchies, its
 reconciliation matrix
 under-determined from the few origins that a frozen zero-shot base affords. A learned
@@ -882,8 +885,9 @@ Time-series foundation models forecast each series on its own and apply no const
 across their outputs, so the forecasts for the parts of a hierarchy need not add up to
 the forecast for the whole. This paper measured how often six such models, used
 zero-shot, violate coupling constraints of this kind and what it costs to restore them. On six of the eight hierarchies most aggregate nodes are
-incoherent for each of the six foundation models, at rates that do not vary with
-accuracy or with model size. A classical model and two global models trained jointly
+incoherent for five of the six foundation models. The sixth, the least accurate, falls
+below half on two of them only because its forecasts are nearly flat. The rates do not
+otherwise vary with accuracy or with model size. A classical model and two global models trained jointly
 across the hierarchy are incoherent at comparable rates, and Chronos-2, run in its joint
 mode, reduces the gaps without closing them. The same failure appears within a single
 series, where each model contradicts itself on between roughly a third and four fifths

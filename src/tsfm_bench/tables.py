@@ -220,7 +220,7 @@ def recon_table() -> str:
     cap = ("Mean MASE (up to eight rolling origins) of the raw and the bottom-up "
            "reconciled (``+\\,b.u.'') forecasts of two foundation models, of Chronos-2 "
            "reconciled by ERM (``unst.'' where the reconciler diverged), of CAA, and of "
-           "the best coherent option over every reconciled model and CAA.")
+           "the best coherent option over every bottom-up reconciled model and CAA.")
     return _wrap(hdr + rows, cap, "tab:recon", "l" + "rr" * len(show) + "rrr")
 
 
