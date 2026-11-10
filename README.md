@@ -4,8 +4,9 @@ Code accompanying a multi-model evaluation of whether time-series foundation mod
 satisfy the constraints real forecasting problems impose — hierarchical and temporal
 coherence, non-negativity — and what it costs to restore them.
 
-> **Anonymous review mirror.** This repository accompanies a double-anonymized
-> submission and deliberately contains no author names or affiliations.
+> **Supplementary material.** This repository accompanies a double-anonymized
+> submission as its supplementary code and deliberately contains no author names or
+> affiliations.
 
 - **[FINDINGS.md](FINDINGS.md)** — plain-language summary of what we did and found.
 - **[DATASETS.md](DATASETS.md)** — the datasets and exactly how they are prepared.
