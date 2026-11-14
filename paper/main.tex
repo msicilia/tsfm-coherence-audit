@@ -93,8 +93,8 @@ modelling. Benchmarks such as GIFT-Eval~\citep{gifteval2024} and
 fev-bench~\citep{fevbench2025} report models of this kind matching or outperforming
 automatic statistical baselines in aggregate, though not in every regime.
 
-Those benchmarks do not measure an important property. Our central observation
-concerns the structure of these models. A model that forecasts each
+Those benchmarks do not measure whether the forecasts satisfy the constraints that
+couple them. A model that forecasts each
 series independently cannot satisfy a \emph{linear coupling} constraint, however
 accurate each individual forecast is. The most familiar case is hierarchical
 coherence: the forecasts for a country's regions must sum to the forecast for the
@@ -102,8 +102,8 @@ country~\citep{mint2019,hfreview2024}. The same holds for any cross-series
 accounting identity. The constraint need not involve a second series. A
 monthly series is coupled to its own annual aggregate, so a model queried at both scales
 must agree with itself. Independent forecasting fails in both cases for the same reason,
-that nothing in the model enforces a relation among outputs it produces separately. The
-cause is the absence of a constraint on the outputs. Per-series modelling is one way of
+that nothing in the model constrains the outputs it produces separately. Per-series
+modelling is one way of
 lacking such a constraint, and a model trained jointly across the whole hierarchy is
 equally free to violate it; we confirm that two trained global models do, at rates
 comparable to the per-series ones. Per-series zero-shot forecasting is the clearest case of
@@ -155,7 +155,7 @@ on the constraints does not change it.
 
 Fourth, we provide a multi-model audit covering six foundation models, two trained global
 baselines, eight hierarchies and a per-series history-length frontier. On six of the
-eight hierarchies the coherence failure holds for every model we evaluate, whether the
+eight hierarchies coherence is violated by every model we evaluate, whether the
 base is zero-shot or globally trained, while accuracy and non-negativity are
 model-dependent.
 
@@ -167,11 +167,7 @@ step that provides the guarantee. Bottom-up and trace-minimization reconciliatio
 standard~\citep{mint2019,hfreview2024}, and CAA adds no reconciliation operator. Its
 contribution is the packaging of automated feasibility enforcement into a small,
 interpretable system, together with the systematic evidence that foundation models
-require it. An ablation
-(Section~\ref{sec:frontier}) shows that conditioning the selection on the
-declared constraints changes which base is chosen but does not by itself improve
-accuracy or feasibility; the guarantee derives from the projection step. We therefore
-do not claim constraint-conditioned selection as a source of accuracy.
+require it.
 
 % ============================================================
 \section{Related work}
@@ -266,7 +262,7 @@ assembly is built for it (Table~\ref{tab:gap}).
 & construction & coherence audit & enforced \\
 \midrule
 Foundation models                   & $\times$ & $\times$ & $\times$ \\
-fev-bench / GIFT-Eval               & $\times$ & partial   & $\times$ \\
+fev-bench / GIFT-Eval               & $\times$ & $\times$ & $\times$ \\
 Cost-frontier studies               & $\times$ & $\times$ & $\times$ \\
 Agentic forecasters                 & $\times$ & $\times$ & $\times$ \\
 Reconciliation methods              & \checkmark & $\times$ & single-base \\
@@ -424,7 +420,9 @@ independent marginals and after two couplings that impose historical cross-serie
 dependence, a Schaake shuffle~\citep{schaake2004} on historical observations and a
 fitted Gaussian copula, and score with CRPS over up to eight rolling origins. On the
 most recent origin of each hierarchy we also record the wall-clock time of every step,
-from inference to coupling.
+from inference to coupling. Times are measured on one NVIDIA GB10 system (Grace
+Blackwell, 20 Arm cores, 128~GB of unified memory), with inference on its GPU and
+reconciliation on its CPU.
 
 \paragraph{Non-negativity (Section~\ref{sec:nonneg})} On strictly non-negative series,
 M3~\citep{data_m3} (values far from zero) and M5 retail~\citep{data_m5} (intermittent
@@ -476,8 +474,9 @@ Chronos-Bolt-Base, and incoherence does
 not vary with that scale. On the six affected hierarchies the foundation models are
 incoherent at indistinguishable rates regardless of size. TinyTimeMixer supplies the
 only low values on those hierarchies (M5 retail $21\%$, Solar $28\%$), but these do not
-indicate better behaviour, because TinyTimeMixer is also the least accurate forecaster
-in the study on every hierarchy. A sufficiently flat forecast is closer to
+indicate better behaviour, because TinyTimeMixer is also the least accurate of the six
+foundation models on seven of the eight hierarchies (Moirai is less accurate on
+Electricity). A sufficiently flat forecast is closer to
 coherent without being useful. Incoherence is therefore independent of capacity as well
 as of accuracy. The small AutoETS model is incoherent at comparable rates
 to the foundation models, and so are the two trained global models. LightGBM is
@@ -543,7 +542,8 @@ regression of the actual values on the base forecasts; we use its
 bottom-up-regularized variant with a fixed penalty rather than a cross-validated one.
 Both under-performed on our hierarchies, for different reasons. MinTrace-OLS estimates
 nothing, but it weights every node equally, aggregate or not, a drawback noted by
-\citet{hfreview2024}, and on Wiki2 it was unstable, with MASE of $2.0$--$2.8$. MinT
+\citet{hfreview2024}, and on Wiki2 it was unstable, with MASE of $2.0$--$2.8$ across the
+six foundation models. MinT
 with the shrinkage covariance estimator,
 fitted on the same in-sample origins as ERM, restores stability (Wiki2 $0.89$--$1.19$
 across the six foundation models) but does not consistently improve on bottom-up. It is
@@ -609,7 +609,7 @@ factor. The further apart the two views of the same series, the more the model d
 with itself; for Chronos-2 the share rises from $37\%$ at the bi-monthly level to
 $65\%$ at the annual one.
 
-The accuracy consequence is stronger than in the cross-sectional case. There
+The accuracy consequence is stronger than in the cross-sectional case. In that case
 reconciliation cost little accuracy; in the temporal case bottom-up aggregation improves
 it. Aggregating
 the monthly forecasts is more accurate than forecasting the aggregate directly in all $30$
@@ -720,7 +720,7 @@ negative lower band only marginally ($72.2\%\to 67.7\%$). A newer model therefor
 cannot be
 deployed on non-negative data without an explicit projection. Non-negativity is
 thus a deployment gap that some models close and others do not, and CAA closes it for
-all by projection. Coherence is closed by none of them.
+all by projection. None of them closes the coherence gap.
 
 
 \input{tables/nonneg}
@@ -757,8 +757,8 @@ This population-level verdict is not a per-series one. We also apply a
 Diebold--Mariano test to each series individually, on the per-horizon loss differentials
 and with the Harvey--Leybourne--Newbold small-sample correction that the per-series MASE
 used above cannot support. It reaches a more conservative conclusion. On the smooth M4 data the ten-parameter AutoETS and the foundation models
-are statistically indistinguishable on about $81\%$ of individual series, rising above
-$90\%$ at some history lengths. On intermittent M5 the foundation models are
+are statistically indistinguishable on about $81\%$ of individual series, and above
+$90\%$ for some model and history-length pairs. On intermittent M5 the foundation models are
 significantly more accurate on $44$--$56\%$ of series, and the indistinguishable share
 falls to $43$--$55\%$. The two
 tests are not in conflict. With thousands of paired series a small mean difference is
@@ -809,8 +809,9 @@ confidence bands over eight rolling origins, for five foundation models and Auto
 \label{sec:discussion}
 A foundation model does not constrain its
 outputs to satisfy a linear coupling relation among them, so it gives no guarantee of
-satisfying one. On real hierarchies the great majority of aggregate nodes are
-incoherent, for the most accurate model as much as the least. This includes
+satisfying one. On six of the eight real hierarchies the great majority of aggregate
+nodes are incoherent for every foundation model but the least accurate, whose forecasts
+are nearly flat. This includes
 Chronos-2~\citep{chronos2_2025}, which accepts past and future covariates. Covariates condition each series' own forecast, but they do not couple
 the forecasts across the hierarchy, so no amount of exogenous information restores
 coherence. Chronos-2 and Moirai can also forecast several series
@@ -860,13 +861,13 @@ recoverable from the model's own marginals.
 six foundation models plus two trained global baselines, and point-reconciliation
 accuracy over up to eight rolling origins with bootstrap confidence intervals. Point
 reconciliation uses bottom-up. We found MinTrace-OLS unstable on Wiki2 and rarely better
-than bottom-up elsewhere (in $6$ of the $64$ combinations of eight base models, the six
-foundation models and the two global ones, with eight hierarchies, each by a negligible
-margin), its shrinkage variant, run on the six foundation models, stable everywhere but
-better than bottom-up in only $21$ of $48$ combinations, and the learned ERM
-reconciler~\citep{bentaieb2019erm} stable on only one of eight hierarchies, its
-reconciliation matrix
-under-determined from the few origins that a frozen zero-shot base affords. A learned
+than bottom-up elsewhere: in $6$ of the $64$ combinations of eight base models (the six
+foundation models and the two global ones) with eight hierarchies, by at most $0.05$
+MASE. Its shrinkage variant, run on the six foundation models, was stable everywhere but
+better than bottom-up in only $21$ of $48$ combinations. The learned ERM
+reconciler~\citep{bentaieb2019erm} was stable on only one of eight hierarchies, its
+reconciliation matrix under-determined from the small number of in-sample origins we
+allow every base. A learned
 reconciler with more in-sample signal, or a score-optimal probabilistic one, is a natural
 extension but was not the reliable choice here. On the probabilistic side, we deliberately
 enlarged the sample with two high-dependence hierarchies (Electricity, Solar) to test
@@ -887,7 +888,7 @@ across their outputs, so the forecasts for the parts of a hierarchy need not add
 the forecast for the whole. This paper measured how often six such models, used
 zero-shot, violate coupling constraints of this kind and what it costs to restore them. On six of the eight hierarchies most aggregate nodes are
 incoherent for five of the six foundation models. The sixth, the least accurate, falls
-below half on two of them only because its forecasts are nearly flat. The rates do not
+below half on two of them, where its forecasts are nearly flat. The rates do not
 otherwise vary with accuracy or with model size. A classical model and two global models trained jointly
 across the hierarchy are incoherent at comparable rates, and Chronos-2, run in its joint
 mode, reduces the gaps without closing them. The same failure appears within a single

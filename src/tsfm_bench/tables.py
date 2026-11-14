@@ -25,6 +25,7 @@ HIER_LABEL = {"M5": "M5 retail"}
 
 NL = " \\\\\n"          # LaTeX row terminator
 MID = "\\midrule\n"
+_WORDS = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight"}
 
 
 def _read(name: str) -> pd.DataFrame:
@@ -254,8 +255,8 @@ def probcoh_table() -> str:
            "predictive distribution and of three coherent reconciliations in sample space "
            "(independent summation, Schaake shuffle, Gaussian copula), ordered by "
            "hierarchy dependence $\\bar\\rho$ (mean $|$correlation$|$ of the bottom "
-           f"series). Two of the {n_models} quantile-emitting models are shown; the full "
-           "table is in the released results.")
+           f"series). Two of the {_WORDS.get(n_models, n_models)} quantile-emitting models "
+           "are shown; the remaining ones are reproduced by the supplementary code.")
     return _wrap(hdr + rows, cap, "tab:probcoh", "llrrrrr")
 
 
