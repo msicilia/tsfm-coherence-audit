@@ -565,18 +565,19 @@ places the analyst in that regime.
 Reconciliation also adds little time, except for ERM. Table~\ref{tab:inftiming} reports
 the inference time of each model on one origin of every hierarchy, and
 Table~\ref{tab:timing} the time of each later step for Chronos-2. A zero-shot point
-forecast of a whole hierarchy takes under three seconds for TinyTimeMixer and the three
-Chronos models, up to $14$ seconds for Moirai, which draws sample paths, and up to $152$
-seconds for TimesFM. Bottom-up and the two MinTrace variants then take less than a
-quarter of a second on every hierarchy, including TourismLarge with $555$ nodes, so they
+forecast of a whole hierarchy takes about a second or less for TinyTimeMixer and the
+three Chronos models, up to $6$ seconds for Moirai, which draws sample paths, and up to
+$34$ seconds for TimesFM. Bottom-up and the two MinTrace variants then take less than a
+tenth of a second on every hierarchy, including TourismLarge with $555$ nodes, so they
 add a negligible fraction to the time of inference. ERM is the exception. Its fit grows
-with the number of nodes and took $19$ minutes on TourismLarge and more than a minute on
-Wiki2, Traffic and Solar, in addition to the in-sample forecast passes it needs, which
-cost between $0.2$ and $7$ seconds. On the probabilistic side, the quantile forecast with
-$200$ samples per node costs the same as the point forecast, because Chronos-2 emits its
-quantiles in the same pass, and independent summation, the Schaake shuffle and the
-Gaussian copula each take well under half a second. The coherence step therefore costs
-little time as well as little accuracy unless a learned reconciler is chosen.
+with the number of nodes and took five and a half minutes on TourismLarge and around
+half a minute on Wiki2, Traffic and Solar, in addition to the in-sample forecast passes
+it needs, which cost between $0.1$ and $3$ seconds. On the probabilistic side, the
+quantile forecast with $200$ samples per node costs the same as the point forecast,
+because Chronos-2 emits its quantiles in the same pass, and independent summation, the
+Schaake shuffle and the Gaussian copula each take well under a quarter of a second. The
+coherence step therefore costs little time as well as little accuracy unless a learned
+reconciler is chosen.
 
 \input{tables/recon}
 
