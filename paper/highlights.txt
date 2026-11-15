@@ -1,8 +1,8 @@
 Highlights (Expert Systems with Applications)
 Each bullet <= 85 characters including spaces.
 
-- Nothing constrains foundation-model outputs to satisfy linear coupling relations.
-- Aggregate nodes incoherent on 6 of 8 hierarchies, for every model size and type.
-- With no second series, models contradict themselves on 37-81% of aggregates.
-- Copula coupling cuts the CRPS cost of coherence most where series are dependent.
-- Explicit projection, not model selection, yields coherent feasible forecasts.
+- Foundation-model forecasts for the parts of a hierarchy need not add up to the total.
+- Six foundation models, small and large, are incoherent on six of eight hierarchies.
+- One model asked for monthly and annual forecasts of one series disagrees with itself.
+- Coupling series with a copula lowers the cost of coherent probabilistic forecasts.
+- Coherence and feasibility come from projecting the forecasts onto the constraints.
