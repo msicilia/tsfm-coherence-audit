@@ -1,4 +1,4 @@
-Highlights (Expert Systems with Applications)
+Highlights (Neurocomputing)
 Each bullet <= 85 characters including spaces.
 
 - Foundation-model forecasts for the parts of a hierarchy need not add up to the total.

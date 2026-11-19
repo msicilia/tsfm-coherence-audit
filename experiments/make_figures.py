@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Regenerate submission-grade figures (vector PDF + 600-dpi PNG) from cached
-result CSVs, with no model re-runs. ESWA prefers vector (PDF/EPS) for line art."""
+result CSVs, with no model re-runs. Elsevier prefers vector (PDF/EPS) for line art."""
 from __future__ import annotations
 
 import os

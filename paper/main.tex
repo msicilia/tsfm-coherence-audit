@@ -1,16 +1,17 @@
 %% ===========================================================
 %%  Constraint Satisfaction in Time-Series Foundation Models
-%%  Expert Systems with Applications (ESWA) submission format,
-%%  double-anonymized review. Reference style: APA (author-date),
-%%  via apalike (see note at \bibliographystyle).
+%%  Neurocomputing submission format (single-anonymized review, so the
+%%  author details are in the front matter below). Reference style:
+%%  numbered, in order of appearance (elsarticle-num).
 %%  Compile: pdflatex main && bibtex main && pdflatex main && pdflatex main
-%%  Author details are in the SEPARATE file title_page.tex (not here).
 %%  Highlights are in the SEPARATE file highlights.txt.
 %% ===========================================================
-%% ESWA submission format: `review` = double-spaced + line numbers.
+%% `review` = double-spaced + line numbers, convenient for referees.
 %% For comfortable reading, change `review` to `preprint` (single-spaced).
-\documentclass[review,authoryear]{elsarticle}
+\documentclass[review,number]{elsarticle}
 
+\usepackage[T1]{fontenc}   % accented author names as single glyphs (searchable, copyable)
+\usepackage{lmodern}       % scalable Type 1 fonts; T1 alone would pull bitmap fonts
 \usepackage{lineno}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
@@ -31,7 +32,7 @@
 \emergencystretch=3em
 \hyphenation{datasets-forecast hierarchical-forecast}
 
-\journal{Expert Systems with Applications}
+\journal{Neurocomputing}
 
 %% Suppress the class's "Preprint submitted to ... <date>" footer on page one.
 \makeatletter
@@ -47,7 +48,21 @@
 \title{Constraint Satisfaction in Time-Series Foundation Models:
 A Multi-Model Audit of Coherence Failures}
 
-%% Authors intentionally omitted for double-anonymized review (see title_page.tex).
+\author[uah]{Lino González García}
+\ead{lino.gonzalez@uah.es}
+\author[uah]{Loukas Samaras}
+\ead{lsamaras@ath.forthnet.gr}
+\author[uah]{Elena García-Barriocanal}
+\ead{elena.garciab@uah.es}
+\author[uah]{Miguel-Angel Sicilia\corref{cor1}}
+\ead{msicilia@uah.es}
+\cortext[cor1]{Corresponding author.}
+\affiliation[uah]{organization={Computer Science Department, Escuela Politécnica
+  Superior, University of Alcalá},
+  addressline={Campus Universitario, Ctra. Madrid-Barcelona Km.\ 33.600},
+  postcode={28805},
+  city={Alcalá de Henares, Madrid},
+  country={Spain}}
 
 \begin{abstract}
 Forecasts must often satisfy linear coupling constraints, such as a hierarchy's parts
@@ -159,7 +174,7 @@ eight hierarchies coherence is violated by every model we evaluate, whether the
 base is zero-shot or globally trained, while accuracy and non-negativity are
 model-dependent.
 
-CAA is an intelligent forecasting system in the sense relevant to this journal. It reads a
+CAA is a forecasting system rather than a new reconciliation method. It reads a
 declared constraint specification, selects a model from a small interpretable library
 by data-derived features, and then enforces feasibility by projecting onto the declared
 constraint set (reconciliation, clipping, isotonic projection). The projection is the
@@ -936,7 +951,20 @@ The authors declare that they have no known competing financial interests or
 personal relationships that could have appeared to influence the work reported in
 this paper.
 
-\section*{Data statement}
+\section*{CRediT authorship contribution statement}
+\textbf{Lino González García:} Conceptualization, Methodology, Software,
+Investigation, Writing -- original draft, Writing -- review \& editing.
+\textbf{Loukas Samaras:} Investigation, Methodology, Validation, Writing -- review \&
+editing. \textbf{Elena García-Barriocanal:} Conceptualization, Methodology,
+Investigation, Validation, Writing -- review \& editing. \textbf{Miguel-Angel
+Sicilia:} Conceptualization, Methodology, Investigation, Validation, Supervision,
+Writing -- review \& editing.
+
+\section*{Funding}
+This research did not receive any specific grant from funding agencies in the public,
+commercial, or not-for-profit sectors.
+
+\section*{Data availability}
 All datasets used in this study are publicly available and no new data were generated.
 The M3~\citep{data_m3}, M4~\citep{data_m4} and M5~\citep{data_m5} forecasting
 competition data and the five benchmark hierarchies (TourismSmall and
@@ -949,15 +977,12 @@ by \citet{salinas2019gpcopula} and distributed with GluonTS~\citep{gluonts2020},
 latter derived from \citet{data_electricity}.
 
 The code that downloads every dataset, builds the hierarchies and reproduces every
-experiment, table and figure in this paper is publicly available in a GitHub
-repository. Its address identifies the authors, so it is given on the title page and
-will be inserted here on acceptance.
-% At acceptance: replace the previous sentence with the public repository URL
-% (https://github.com/msicilia/tsfm-coherence-audit) or a Zenodo DOI.
+experiment, table and figure in this paper is publicly available at
+\url{https://github.com/msicilia/tsfm-coherence-audit}.
 
-% ESWA uses APA (author-date). apalike is the natbib-compatible author-year style
-% shipped with all TeX distributions; for strict APA 7th use apacite at production.
-\bibliographystyle{apalike}
+% Neurocomputing: numbered references in order of appearance; the -names variant
+% lets \citet print "Author et al. [n]" as the guide for authors shows.
+\bibliographystyle{elsarticle-num-names}
 \bibliography{references}
 
 \end{document}
