@@ -1,8 +1,8 @@
 Highlights (Neurocomputing)
 Each bullet <= 85 characters including spaces.
 
-- Foundation-model forecasts for the parts of a hierarchy need not add up to the total.
-- Six foundation models, small and large, are incoherent on six of eight hierarchies.
-- One model asked for monthly and annual forecasts of one series disagrees with itself.
-- Coupling series with a copula lowers the cost of coherent probabilistic forecasts.
+- Six foundation models, small or large, are incoherent on six of eight hierarchies.
+- Joint forecasting narrows the gaps; one series at two time scales contradicts itself.
+- On a frozen base, learned reconcilers are unstable; bottom-up is the reliable choice.
+- The cost of summing independent marginals does not grow with cross-series dependence.
 - Coherence and feasibility come from projecting the forecasts onto the constraints.

@@ -65,26 +65,25 @@ A Multi-Model Audit of Coherence Failures}
   country={Spain}}
 
 \begin{abstract}
-Forecasts must often satisfy linear coupling constraints, such as a hierarchy's parts
-summing to its total. Time-series foundation models are proposed as general-purpose
-forecasters. Nothing constrains their outputs to satisfy such relations, and benchmarks
-do not test it. The frequency of such violations, and the cost of removing them, are not
-known. We audit six foundation models zero-shot on eight hierarchies, against a
-classical model and two jointly trained models. We measure coherence across the series
-of a hierarchy and across time scales of one series, with non-negativity as a
-control. We compare reconciliation methods for point and probabilistic forecasts
-and accuracy across history lengths. On six of the eight hierarchies most aggregate
-nodes are incoherent for every foundation model but the least accurate, whatever its size. The
-baselines fail at comparable rates, and so does one series forecast at monthly and
-annual scale. Bottom-up reconciliation restores point coherence at a small loss of
-accuracy, more reliably than ordinary-least-squares trace minimisation or a learned
-reconciler. It does not restore the predictive distributions, because these need the
-dependence between series, which the models lack. One model satisfies non-negativity
-exactly, so the failure is confined to coupling constraints. Accuracy does not single
-out a base model, since it varies more among foundation models than between them and the
-classical model. A forecasting system should therefore project its base forecast onto
-the constraints. Constraint-aware assembly does this for a small interpretable
-base; in an ablation, the projection step alone makes the forecasts feasible.
+Time-series foundation models produce forecasts for each series, and nothing in them
+constrains the forecasts for the parts of a hierarchy to sum to that for the whole, a
+property called coherence. How often this linear coupling is violated, whether the rate
+depends on the model, and what it costs to remove it on a model that cannot be refitted
+have not been measured. We audit six foundation models on eight hierarchies and compare
+bottom-up, trace-minimisation and learned reconciliation on point and probabilistic
+forecasts. On six of the eight hierarchies most aggregate forecasts are incoherent for
+every foundation model but the least accurate, at rates that do not vary with model size
+or accuracy. Joint forecasting narrows the gaps without closing them, and a single series
+forecast at monthly and annual scale contradicts itself on up to four fifths of its
+aggregates. On a frozen base the learned reconcilers are unstable, because the base
+affords few in-sample origins, and bottom-up reconciliation is the reliable choice, at a
+small cost in accuracy; across time scales it improves accuracy. For predictive
+distributions the cost of summing independent marginals does not grow with cross-series
+dependence, whereas coupling the series with a copula lowers it most where dependence is
+strongest. Accuracy varies more among foundation models than between them and a
+classical model, so it does not identify a base. A forecasting system should therefore
+project whichever base is most accurate onto its constraints; an ablation shows that the
+projection step alone supplies the guarantee.
 \end{abstract}
 
 \begin{keyword}
@@ -154,7 +153,10 @@ First, we show that coherence is violated by every foundation model we test, eac
 per series, across the series of a hierarchy and across the time aggregations of a single
 series. The rates are independent of accuracy and of model size. Point reconciliation
 removes the violation exactly, and in the temporal case bottom-up aggregation also
-improves accuracy.
+improves accuracy. On a frozen base, however, the reconcilers that estimate a weight
+matrix are unstable, because such a base affords few in-sample origins, and bottom-up
+is the reliable choice; this reverses the usual recommendation for fitted base
+forecasters.
 
 Second, we show that probabilistic coherence is more demanding. Summing independent marginals is
 inexpensive on most hierarchies and does not scale with cross-series dependence,
@@ -162,17 +164,17 @@ contrary to what a smaller sample had suggested. Copula coupling lowers the cost
 dependence is strongest, because per-series models supply no joint distribution.
 An accurate coherent predictive distribution therefore remains open.
 
-Third, we introduce \emph{constraint-aware assembly} (CAA). CAA projects a small
-interpretable base onto the declared feasible set by reconciliation, clipping or isotonic
-projection, so its forecasts are coherent and feasible by construction. An ablation shows
-that the feasibility comes from the projection step; conditioning the model selection
-on the constraints does not change it.
-
-Fourth, we provide a multi-model audit covering six foundation models, two trained global
+Third, we provide a multi-model audit covering six foundation models, two trained global
 baselines, eight hierarchies and a per-series history-length frontier. On six of the
 eight hierarchies coherence is violated by every model we evaluate, whether the
 base is zero-shot or globally trained, while accuracy and non-negativity are
 model-dependent.
+
+Fourth, we introduce \emph{constraint-aware assembly} (CAA). CAA projects a small
+interpretable base onto the declared feasible set by reconciliation, clipping or isotonic
+projection, so its forecasts are coherent and feasible by construction. An ablation shows
+that the feasibility comes from the projection step; conditioning the model selection
+on the constraints does not change it.
 
 CAA is a forecasting system rather than a new reconciliation method. It reads a
 declared constraint specification, selects a model from a small interpretable library
